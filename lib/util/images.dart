@@ -18,7 +18,15 @@ const iconPollen = 'assets/icons/icon_pollen.png';
 const iconWave = 'assets/icons/icon_wave.png';
 const iconIntro1 = 'assets/icons/icon_intro1.png';
 const iconIntro2 = 'assets/icons/icon_intro2.png';
-
+const iconThermometerSetting = 'assets/icons/icon_thermometer_setting.png';
+const iconTemperature = 'assets/icons/icon_temperature.png';
+const iconThemes = 'assets/icons/icon_themes.png';
+const iconLanguage = 'assets/icons/icon_language.png';
+const iconContent = 'assets/icons/icon_content.png';
+const iconConditonSetting = 'assets/icons/icon_condition.png';
+const iconPrivacy = 'assets/icons/icon_privacy.png';
+const iconContact = 'assets/icons/icon_contact.png';
+const iconShare = 'assets/icons/icon_share.png';
 //images
 const homeBanner = 'assets/images/home_banner.png';
 const imageIntro1 = 'assets/images/intro_1.png';
