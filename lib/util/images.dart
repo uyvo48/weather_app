@@ -27,6 +27,8 @@ const iconConditonSetting = 'assets/icons/icon_condition.png';
 const iconPrivacy = 'assets/icons/icon_privacy.png';
 const iconContact = 'assets/icons/icon_contact.png';
 const iconShare = 'assets/icons/icon_share.png';
+
+const iconLanguageUS = 'assets/icons/icon_language_US.png';
 //images
 const homeBanner = 'assets/images/home_banner.png';
 const imageIntro1 = 'assets/images/intro_1.png';
@@ -40,3 +42,5 @@ const imageTheme5 = 'assets/images/theme_5.png';
 const imageTheme6 = 'assets/images/theme_6.png';
 const imageTheme7 = 'assets/images/theme_7.png';
 const imageTheme8 = 'assets/images/theme_8.png';
+const imageCompass = 'assets/images/image_compass.png';
+const imageNavigation = 'assets/images/image_Navigation.png';

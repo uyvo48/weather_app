@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/home/home_controller/home_controller.dart';
+import 'package:weather_app/home/component/language_item.dart';
+import 'package:weather_app/util/images.dart';
 
-import '../component/setting.dart';
+class LanguageView extends StatefulWidget {
+  const LanguageView({super.key});
 
-class SettingView extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return SettingViewState();
-  }
+  State<LanguageView> createState() => _LanguageViewState();
 }
 
-class SettingViewState extends State<SettingView> {
-  final HomeController homeController = HomeController();
+class _LanguageViewState extends State<LanguageView> {
+  bool? check;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [],
         titleSpacing: 0,
         centerTitle: true,
         leading: Container(
@@ -32,29 +30,20 @@ class SettingViewState extends State<SettingView> {
           ),
         ),
         title: Text(
-          "Setting",
+          'Language',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
+        actions: [Icon(Icons.check_circle)],
       ),
-
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
-              shrinkWrap: true,
+              itemCount: 3,
               scrollDirection: Axis.vertical,
-              itemCount: homeController.listSetting.length,
+              shrinkWrap: true,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  child: Setting(
-                    icon: homeController.listSetting[index].icon,
-                    text: homeController.listSetting[index].text,
-                  ),
-                );
+                return LanguageItem(iconLanguageItem: iconLanguageUS);
               },
             ),
           ),
