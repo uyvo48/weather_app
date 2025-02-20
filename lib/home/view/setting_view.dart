@@ -15,47 +15,51 @@ class SettingViewState extends State<SettingView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppBar(
-          titleSpacing: 0,
-          centerTitle: true,
-          leading: Container(
-            padding: EdgeInsets.all(10),
-            child: IconButton(
-              onPressed: null,
-              color: Colors.white,
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
-              ),
-              icon: Icon(Icons.arrow_back_ios_rounded, size: 18),
+    return Scaffold(
+      appBar: AppBar(
+        titleSpacing: 0,
+        centerTitle: true,
+        leading: Container(
+          padding: EdgeInsets.all(10),
+          child: IconButton(
+            onPressed: null,
+            color: Colors.white,
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+            ),
+            icon: Icon(Icons.arrow_back_ios_rounded, size: 18),
+          ),
+        ),
+        title: Text(
+          "Setting",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
+        actions: [],
+      ),
+
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: homeController.listSetting.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  child: Setting(
+                    icon: homeController.listSetting[index].icon,
+                    text: homeController.listSetting[index].text,
+                  ),
+                );
+              },
             ),
           ),
-          title: Text(
-            "Setting",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
-          actions: [],
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: homeController.listSetting.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Setting(
-                  icon: homeController.listSetting[index].icon,
-                  text: homeController.listSetting[index].text,
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

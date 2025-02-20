@@ -29,5 +29,14 @@ class HomeController {
     Setting(icon: iconPrivacy, text: 'Privacy'),
     Setting(icon: iconContact, text: 'Contact us'),
     Setting(icon: iconShare, text: 'Share app'),
+    Setting(icon: iconThermometerSetting, text: 'Thermometers'),
+    Setting(icon: iconTemperature, text: 'Temperature'),
+    Setting(icon: iconThemes, text: 'Themes'),
+    Setting(icon: iconLanguage, text: 'Language'),
+    Setting(icon: iconContent, text: 'Modify my consent'),
+    Setting(icon: iconConditonSetting, text: 'Term of condition'),
+    Setting(icon: iconPrivacy, text: 'Privacy'),
+    Setting(icon: iconContact, text: 'Contact us'),
+    Setting(icon: iconShare, text: 'Share app'),
   ];
 }

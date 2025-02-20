@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'home/view/setting_view.dart';
+import 'package:weather_app/themes/view/theme_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: SettingView()),
+      home: SafeArea(child: Scaffold(body: ThemeView())),
     );
   }
 }

@@ -31,3 +31,12 @@ const iconShare = 'assets/icons/icon_share.png';
 const homeBanner = 'assets/images/home_banner.png';
 const imageIntro1 = 'assets/images/intro_1.png';
 const imageIntro2 = 'assets/images/intro_2.png';
+
+const imageTheme1 = 'assets/images/theme_1.png';
+const imageTheme2 = 'assets/images/theme_2.png';
+const imageTheme3 = 'assets/images/theme_3.png';
+const imageTheme4 = 'assets/images/theme_4.png';
+const imageTheme5 = 'assets/images/theme_5.png';
+const imageTheme6 = 'assets/images/theme_6.png';
+const imageTheme7 = 'assets/images/theme_7.png';
+const imageTheme8 = 'assets/images/theme_8.png';
