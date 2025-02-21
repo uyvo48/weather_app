@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Visibility_button extends StatefulWidget {
+class VisibilityButton extends StatefulWidget {
+  const VisibilityButton({super.key});
+
   @override
-  _Visibility_buttonState createState() => _Visibility_buttonState();
+  _VisibilityButtonState createState() => _VisibilityButtonState();
 }
 
-class _Visibility_buttonState extends State<Visibility_button>
+class _VisibilityButtonState extends State<VisibilityButton>
     with SingleTickerProviderStateMixin {
   bool isChecked = false;
   Duration _duration = Duration(milliseconds: 370);

@@ -29,6 +29,8 @@ const iconContact = 'assets/icons/icon_contact.png';
 const iconShare = 'assets/icons/icon_share.png';
 
 const iconLanguageUS = 'assets/icons/icon_language_US.png';
+
+const iconSunRise = 'assets/icons/icon_sun_rise.png';
 //images
 const homeBanner = 'assets/images/home_banner.png';
 const imageIntro1 = 'assets/images/intro_1.png';

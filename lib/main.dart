@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'home/view/language.dart';
+import 'package:weather_app/weather_forecast/view/weather_forecast_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SafeArea(child: Scaffold(body: LanguageView())),
+      home: SafeArea(child: Scaffold(body: WeatherForecastView())),
     );
   }
 }

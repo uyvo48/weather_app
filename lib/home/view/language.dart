@@ -10,7 +10,12 @@ class LanguageView extends StatefulWidget {
 }
 
 class _LanguageViewState extends State<LanguageView> {
-  bool? check;
+  int groupValue = 1;
+  void _handleRadioValueChanged(int newValue) {
+    setState(() {
+      groupValue = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,12 @@ class _LanguageViewState extends State<LanguageView> {
           'Language',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
-        actions: [Icon(Icons.check_circle)],
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: Icon(Icons.check_circle),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -43,7 +53,15 @@ class _LanguageViewState extends State<LanguageView> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return LanguageItem(iconLanguageItem: iconLanguageUS);
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: LanguageItem(
+                    iconLanguageItem: iconLanguageUS,
+                    value: index,
+                    groupValue: groupValue,
+                    onChanged: _handleRadioValueChanged,
+                  ),
+                );
               },
             ),
           ),

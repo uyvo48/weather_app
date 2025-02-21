@@ -4,6 +4,8 @@ import 'package:weather_app/home/home_controller/home_controller.dart';
 import '../component/setting.dart';
 
 class SettingView extends StatefulWidget {
+  const SettingView({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return SettingViewState();

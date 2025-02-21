@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-class LanguageItem extends StatefulWidget {
+class LanguageItem extends StatelessWidget {
   final String iconLanguageItem;
-  const LanguageItem({super.key, required this.iconLanguageItem});
+  final int value;
+  final int groupValue;
+  final Function(int) onChanged; // Callback để cập nhật giá trị từ LanguageView
 
-  @override
-  State<LanguageItem> createState() => _LanguageItemState();
-}
-
-enum SingingCharacter { lafayette, jefferson }
-
-class _LanguageItemState extends State<LanguageItem> {
-  SingingCharacter? _character = SingingCharacter.lafayette;
+  const LanguageItem({
+    super.key,
+    required this.iconLanguageItem,
+    required this.value,
+    required this.groupValue,
+    required this.onChanged, // Nhận callback
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +24,29 @@ class _LanguageItemState extends State<LanguageItem> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Color(0xff000000),
+            color: Color(0xff000000).withOpacity(0.1),
             blurRadius: 2,
             offset: Offset(0, 4),
           ),
         ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Image.asset(
-            widget.iconLanguageItem,
+            iconLanguageItem,
             height: 28,
             width: 28,
             fit: BoxFit.fill,
+          ),
+          Radio(
+            value: value,
+            groupValue: groupValue,
+            onChanged: (newValue) {
+              if (newValue != null) {
+                onChanged(newValue); // Gọi hàm callback
+              }
+            },
           ),
         ],
       ),
