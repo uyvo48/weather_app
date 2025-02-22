@@ -31,6 +31,10 @@ const iconShare = 'assets/icons/icon_share.png';
 const iconLanguageUS = 'assets/icons/icon_language_US.png';
 
 const iconSunRise = 'assets/icons/icon_sun_rise.png';
+
+const iconMapWorld = 'assets/icons/icon_map_world.png';
+
+const iconSun = 'assets/icons/icon_sun.png';
 //images
 const homeBanner = 'assets/images/home_banner.png';
 const imageIntro1 = 'assets/images/intro_1.png';

@@ -17,13 +17,13 @@ class _ButtonWeatherForecastState extends State<ButtonWeatherForecast> {
         child: Column(
           children: [
             SizedBox(
-              height: 32,
+              height: 38,
               width: 62,
               child: AnimatedToggleSwitch<bool>.size(
                 current: firstSwitchValue,
                 values: [false, true],
                 iconOpacity: 0.2,
-                indicatorSize: const Size.fromHeight(24),
+                indicatorSize: const Size.fromHeight(32),
 
                 customIconBuilder:
                     (context, local, global) => Text(
