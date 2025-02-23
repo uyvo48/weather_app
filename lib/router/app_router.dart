@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:go_router/go_router.dart';
 import 'package:weather_app/home/view/premission.dart';
+import 'package:weather_app/uv_index/view/uv_index_view.dart';
 
 import '../home/view/setting_view.dart';
 
@@ -10,7 +11,9 @@ class AppRouter {
   // child class home
   static String settingScreen = "settingScreen";
   static String settingScreenPath = "/setting_screen";
-  static String uvIndexScreen = "/home_screen/uv_index_screen";
+
+  static String uvIndexScreen = "UVIndexScreen";
+  static String uvIndexScreenPath = "/uv_index_screen";
   static String humidityScreen = "/home_screen/humidity_screen";
   static String airQualityScreen = "/home_screen/air_quality_screen";
   static String weatherForecastScreen = "/home_screen/weather_forecast_screen";
@@ -44,6 +47,13 @@ class AppRouter {
             path: settingScreenPath,
             builder: (context, state) {
               return SettingView();
+            },
+          ),
+          GoRoute(
+            name: uvIndexScreen,
+            path: uvIndexScreenPath,
+            builder: (context, state) {
+              return UvIndexView();
             },
           ),
         ],
