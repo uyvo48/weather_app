@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/weather_forecast/view/weather_forecast_view.dart';
+import 'package:weather_app/router/app_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +11,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      home: SafeArea(child: Scaffold(body: WeatherForecastView())),
+      // SafeArea(child: Scaffold(body: WeatherForecastView())),
+      // routeInformationParser: AppRouter().router.routeInformationParser,
+      // routerDelegate: AppRouter().router.routerDelegate,
+      routerConfig: AppRouter().router,
     );
   }
 }

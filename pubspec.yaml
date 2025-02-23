@@ -14,7 +14,7 @@ dependencies:
     path: logger
 
 
-
+  go_router: ^14.8.0
   animated_toggle_switch: ^0.8.4
   permission_handler: ^11.3.1
   flutter_compass: ^0.8.1

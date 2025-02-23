@@ -4,13 +4,15 @@ class VisibilityButton extends StatefulWidget {
   const VisibilityButton({super.key});
 
   @override
-  _VisibilityButtonState createState() => _VisibilityButtonState();
+  _VisibilityButtonState createState() {
+    return _VisibilityButtonState();
+  }
 }
 
 class _VisibilityButtonState extends State<VisibilityButton>
     with SingleTickerProviderStateMixin {
   bool isChecked = false;
-  Duration _duration = Duration(milliseconds: 370);
+  final Duration _duration = Duration(milliseconds: 370);
   late Animation<Alignment> _animation;
   late AnimationController _animationController;
 

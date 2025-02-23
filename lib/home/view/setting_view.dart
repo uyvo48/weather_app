@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weather_app/home/home_controller/home_controller.dart';
 
 import '../component/setting.dart';
@@ -25,7 +26,9 @@ class SettingViewState extends State<SettingView> {
         leading: Container(
           padding: EdgeInsets.all(10),
           child: IconButton(
-            onPressed: null,
+            onPressed: () {
+              GoRouter.of(context).pop();
+            },
             color: Colors.white,
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all<Color>(Colors.white),

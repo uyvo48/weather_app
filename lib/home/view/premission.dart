@@ -1,12 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weather_app/home/home_controller/home_controller.dart';
+import 'package:weather_app/router/app_router.dart';
 import 'package:weather_app/util/images.dart';
 
 import '../component/weather_forcast.dart';
 
 class Premission extends StatefulWidget {
+  const Premission({super.key});
+
   @override
   State<Premission> createState() => PremissionState();
 }
@@ -24,10 +28,10 @@ class PremissionState extends State<Premission> {
               decoration: BoxDecoration(
                 image: DecorationImage(image: ExactAssetImage(homeBanner)),
               ),
-              child: new BackdropFilter(
-                filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: new Container(
-                  decoration: new BoxDecoration(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Container(
+                  decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
                   ),
                 ),
@@ -86,7 +90,14 @@ class PremissionState extends State<Premission> {
                             ),
                           ],
                         ),
-                        child: Image.asset(iconSetUp),
+                        child: GestureDetector(
+                          onTap: () {
+                            GoRouter.of(
+                              context,
+                            ).push(AppRouter.settingScreenPath);
+                          },
+                          child: Image.asset(iconSetUp),
+                        ),
                       ),
                     ],
                   ),
@@ -103,7 +114,7 @@ class PremissionState extends State<Premission> {
                             BoxShadow(color: Colors.black26, blurRadius: 5),
                           ],
                         ),
-                        height: 221,
+                        height: 225,
                         width: 80,
 
                         child: Padding(
@@ -163,7 +174,10 @@ class PremissionState extends State<Premission> {
                                 Text(
                                   'UV index\n '
                                   '????',
-                                  style: TextStyle(color: Colors.grey),
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
                                 ),
                                 SizedBox(width: 13),
                                 Container(
@@ -183,7 +197,10 @@ class PremissionState extends State<Premission> {
                                 Text(
                                   'Humidity \n '
                                   '????',
-                                  style: TextStyle(color: Colors.grey),
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ],
                             ),
