@@ -4,8 +4,8 @@ import 'package:weather_app/visibility/component/visibility_switch.dart';
 
 import '../util/images.dart';
 
-class CirclePage extends StatelessWidget {
-  CirclePage({
+class CirclePage extends StatefulWidget {
+  const CirclePage({
     super.key,
     required this.color1,
     required this.textParameter,
@@ -20,7 +20,14 @@ class CirclePage extends StatelessWidget {
   final Color color2;
   final String textParameter;
   final String textState;
-  final dynamic classVisibility = VisibilityView();
+
+  @override
+  State<CirclePage> createState() => _CirclePageState();
+}
+
+class _CirclePageState extends State<CirclePage> {
+  dynamic classVisibility;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,7 +40,7 @@ class CirclePage extends StatelessWidget {
             Image.asset(iconLocation),
             Center(
               child: Text(
-                located,
+                widget.located,
 
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
               ),
@@ -44,7 +51,7 @@ class CirclePage extends StatelessWidget {
         Center(
           child: Text(
             textAlign: TextAlign.center,
-            textAirQuality,
+            widget.textAirQuality,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
         ),
@@ -74,12 +81,12 @@ class CirclePage extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
-                  colors: [color1, color2],
+                  colors: [widget.color1, widget.color2],
                 ),
               ),
               child: Center(
                 child: Text(
-                  textParameter,
+                  widget.textParameter,
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 56,
@@ -91,12 +98,13 @@ class CirclePage extends StatelessWidget {
           ],
         ),
         SizedBox(height: 32),
-        classVisibility is VisibilityView
-            ? VisibilityButton()
-            : Text(
-              textState,
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-            ),
+        if (classVisibility is VisibilityView)
+          VisibilityButton()
+        else
+          Text(
+            widget.textState,
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+          ),
       ],
     );
   }

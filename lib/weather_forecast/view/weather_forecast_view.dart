@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weather_app/util/images.dart';
 
 import '../component/button_weather_forecast.dart';
@@ -18,15 +19,20 @@ class _WeatherForecastViewState extends State<WeatherForecastView> {
       appBar: AppBar(
         titleSpacing: 0,
         centerTitle: true,
-        leading: Container(
-          padding: EdgeInsets.all(10),
-          child: IconButton(
-            onPressed: null,
-            color: Colors.white,
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+        leading: GestureDetector(
+          onTap: () {
+            GoRouter.of(context).pop();
+          },
+          child: Container(
+            padding: EdgeInsets.all(10),
+            child: IconButton(
+              onPressed: null,
+              color: Colors.white,
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              ),
+              icon: Icon(Icons.arrow_back_ios_rounded, size: 18),
             ),
-            icon: Icon(Icons.arrow_back_ios_rounded, size: 18),
           ),
         ),
         title: Text(

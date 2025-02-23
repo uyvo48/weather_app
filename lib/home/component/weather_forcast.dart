@@ -1,24 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../router/app_router.dart';
-
 class ListWeather extends StatelessWidget {
   final int color;
   final String iconWeather;
   final String nameWeather;
+  final String screenItem;
 
   const ListWeather({
     super.key,
     required this.color,
     required this.iconWeather,
     required this.nameWeather,
+    required this.screenItem,
   });
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).pushNamed(AppRouter.uvIndexScreen);
+        GoRouter.of(context).pushNamed(screenItem);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

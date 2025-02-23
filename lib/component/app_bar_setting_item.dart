@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AppBarSettingItem extends StatelessWidget implements PreferredSizeWidget {
   final String textSettingItem;
@@ -11,15 +12,20 @@ class AppBarSettingItem extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       titleSpacing: 0,
       centerTitle: true,
-      leading: Container(
-        padding: EdgeInsets.all(10),
-        child: IconButton(
-          onPressed: null,
-          color: Colors.white,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+      leading: GestureDetector(
+        onTap: () {
+          GoRouter.of(context).pop();
+        },
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: IconButton(
+            onPressed: null,
+            color: Colors.white,
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+            ),
+            icon: Icon(Icons.arrow_back_ios_rounded, size: 18),
           ),
-          icon: Icon(Icons.arrow_back_ios_rounded, size: 18),
         ),
       ),
       title: Text(

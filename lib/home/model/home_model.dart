@@ -7,5 +7,5 @@ class HomeModel {
 
   String screenItem;
 
-  HomeModel(this.color, this.iconWeather, this.nameWeather, this.screenItem) {}
+  HomeModel(this.color, this.iconWeather, this.nameWeather, this.screenItem);
 }

@@ -250,6 +250,10 @@ class PremissionState extends State<Premission> {
                                   homeController
                                       .listWeatherForCast[index]
                                       .nameWeather,
+                              screenItem:
+                                  homeController
+                                      .listWeatherForCast[index]
+                                      .screenItem,
                             );
                           },
                         ),
