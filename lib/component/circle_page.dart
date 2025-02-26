@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:weather_app/visibility/%20view/visibility_view.dart';
-import 'package:weather_app/visibility/component/visibility_switch.dart';
 
+import '../screen/visibility/ view/visibility_view.dart';
+import '../screen/visibility/component/visibility_switch.dart';
 import '../util/images.dart';
 
 class CirclePage extends StatefulWidget {

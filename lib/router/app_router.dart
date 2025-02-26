@@ -2,19 +2,24 @@ import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weather_app/air_quality/view/air_quality_view.dart';
-import 'package:weather_app/compass/view/compass_view.dart';
-import 'package:weather_app/home/view/premission.dart';
-import 'package:weather_app/humidity/view/humidity_view.dart';
-import 'package:weather_app/pollen/view/pollen_view.dart';
-import 'package:weather_app/sun_set/view/sun_set_view.dart';
-import 'package:weather_app/uv_index/view/uv_index_view.dart';
-import 'package:weather_app/visibility/%20view/visibility_view.dart';
-import 'package:weather_app/weather_forecast/view/weather_forecast_view.dart';
 
-import '../home/view/setting_view.dart';
+import '../screen/air_quality/view/air_quality_view.dart';
+import '../screen/compass/view/compass_view.dart';
+import '../screen/home/view/premission.dart';
+import '../screen/home/view/setting_view.dart';
+import '../screen/humidity/view/humidity_view.dart';
+import '../screen/intro/view/intro_view.dart';
+import '../screen/pollen/view/pollen_view.dart';
+import '../screen/sun_set/view/sun_set_view.dart';
+import '../screen/themes/view/theme_view.dart';
+import '../screen/thermometer/view/thermoment_view.dart';
+import '../screen/uv_index/view/uv_index_view.dart';
+import '../screen/visibility/ view/visibility_view.dart';
+import '../screen/weather_forecast/view/weather_forecast_view.dart';
 
 class AppRouter {
+  static String intro = "intro";
+  static String introPath = "/intro";
   static String homeScreen = "/";
   // child class home
   static String settingScreen = "settingScreen";
@@ -58,15 +63,28 @@ class AppRouter {
   static String waveScreenPath = "/home_screen/wave_screen";
 
   // child class setting
-  static String themeScreen = "/home_screen/setting_screen/theme_screen";
-  static String languageScreen = "/home_screen/setting_screen/language";
-  static String thermometerScreen =
-      "/home_screen/setting_screen/thermometer_screen";
+  static String themeScreen = "themScreen";
+  static String themeScreenPath = "theme_screen";
 
+  static String languageScreen = "LanguageScreen";
+  static String languageScreenPath = "/setting_screen/language";
+
+  static String thermometerScreen = "ThermometerScreen";
+  static String thermometerScreenPath = "/setting_screen/thermometer_screen";
+
+  static String temperatureScreen = "TemperatureScreen";
+  static String temperatureScreenPath = "/setting_screen/temperature_screen";
   GoRouter router = GoRouter(
-    initialLocation: AppRouter.homeScreen,
+    initialLocation: introPath,
     debugLogDiagnostics: true,
     routes: <RouteBase>[
+      GoRoute(
+        name: intro,
+        path: introPath,
+        builder: (context, state) {
+          return IntroView();
+        },
+      ),
       GoRoute(
         path: homeScreen,
         builder: (context, state) {
@@ -79,7 +97,25 @@ class AppRouter {
             builder: (context, state) {
               return SettingView();
             },
+            routes: [
+              GoRoute(
+                name: thermometerScreen,
+                path: thermometerScreenPath,
+                builder: (context, state) {
+                  return ThermomentView();
+                },
+              ),
+
+              GoRoute(
+                name: themeScreen,
+                path: themeScreenPath,
+                builder: (context, state) {
+                  return ThemeView();
+                },
+              ),
+            ],
           ),
+
           // UV
           GoRoute(
             name: uvIndexScreen,

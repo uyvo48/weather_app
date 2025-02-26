@@ -47,5 +47,6 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+
 </dict>
 </plist>
