@@ -16,8 +16,10 @@ class _UvIndexViewState extends State<UvIndexView> {
     return Scaffold(
       appBar: AppBarSettingItem(textSettingItem: 'UltraViolet(UV)'),
       body: CirclePage(
+        checkUnit: false,
+        unit: "",
         color1: Color(0xffF36253),
-        textParameter: '0.85',
+        textParameter: 0.85,
         color2: Color(0xffF9ED4B),
         located: 'Hoài Đức',
         textAirQuality: 'Low',

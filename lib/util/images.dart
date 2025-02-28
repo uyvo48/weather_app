@@ -18,16 +18,16 @@ const iconPollen = 'assets/icons/icon_pollen.png';
 const iconWave = 'assets/icons/icon_wave.png';
 const iconIntro1 = 'assets/icons/icon_intro1.png';
 const iconIntro2 = 'assets/icons/icon_intro2.png';
+// setting
 const iconThermometerSetting = 'assets/icons/icon_thermometer_setting.png';
 const iconTemperature = 'assets/icons/icon_temperature.png';
 const iconThemes = 'assets/icons/icon_themes.png';
 const iconLanguage = 'assets/icons/icon_language.png';
 const iconContent = 'assets/icons/icon_content.png';
-const iconConditonSetting = 'assets/icons/icon_condition.png';
+const iconConditonSetting1 = 'assets/icons/icon_condition.png';
 const iconPrivacy = 'assets/icons/icon_privacy.png';
 const iconContact = 'assets/icons/icon_contact.png';
 const iconShare = 'assets/icons/icon_share.png';
-
 const iconLanguageUS = 'assets/icons/icon_language_US.png';
 
 const iconSunRise = 'assets/icons/icon_sun_rise.png';
@@ -39,6 +39,10 @@ const iconSun = 'assets/icons/icon_sun.png';
 const iconErrol = 'assets/icons/icon_errol.png';
 
 const iconDisconnectedInternet = "assets/icons/icon_disconnected_internet.png";
+
+// thermometer
+const iconThermometerSetting2 = "assets/icons/icon_thermometer_setting_2.png";
+const iconThermometerSetting3 = "assets/icons/icon_thermometer_setting_3.png";
 //images
 const homeBanner = 'assets/images/home_banner.png';
 const imageIntro1 = 'assets/images/intro_1.png';

@@ -2,18 +2,31 @@ import 'package:flutter/material.dart';
 
 class WeatherDayItem extends StatelessWidget {
   final String textDay;
-  final String minTemperature;
-  final String maxTemperature;
+  final double minTempCelsius; // Đổi tên và kiểu thành double
+  final double maxTempCelsius;
   final String iconState;
   final String textStateWeatherForecast;
+  final bool useFahrenheit; // Đổi tên biến
+
   const WeatherDayItem({
     super.key,
     required this.textDay,
-    required this.minTemperature,
-    required this.maxTemperature,
+    required this.minTempCelsius,
+    required this.maxTempCelsius,
     required this.iconState,
     required this.textStateWeatherForecast,
+    required this.useFahrenheit,
   });
+
+  // Hiển thị nhiệt độ với đơn vị
+  String getTemperatureText(double celsius) {
+    if (useFahrenheit) {
+      final fahrenheit = (celsius * 1.8 + 32).round();
+      return '$fahrenheit°F'; // Dạng "77°F"
+    } else {
+      return '${celsius.round()}°C'; // Dạng "25°C"
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +55,16 @@ class WeatherDayItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                minTemperature,
+                getTemperatureText(minTempCelsius),
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
               ),
+              SizedBox(width: 4),
               Text(
-                maxTemperature,
+                getTemperatureText(maxTempCelsius),
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
               ),
             ],
           ),
-
           Row(
             children: [
               Image.asset(iconState),

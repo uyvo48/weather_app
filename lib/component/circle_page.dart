@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-import '../screen/visibility/ view/visibility_view.dart';
-import '../screen/visibility/component/visibility_switch.dart';
 import '../util/images.dart';
 
 class CirclePage extends StatefulWidget {
@@ -13,12 +11,17 @@ class CirclePage extends StatefulWidget {
     required this.located,
     required this.textAirQuality,
     required this.textState,
+
+    required this.unit,
+    required this.checkUnit,
   });
+  final bool checkUnit;
+  final String unit;
   final String textAirQuality;
   final String located;
   final Color color1;
   final Color color2;
-  final String textParameter;
+  final double textParameter;
   final String textState;
 
   @override
@@ -84,27 +87,40 @@ class _CirclePageState extends State<CirclePage> {
                   colors: [widget.color1, widget.color2],
                 ),
               ),
-              child: Center(
-                child: Text(
-                  widget.textParameter,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 56,
-                    color: Color(0xffFFFFFF),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Text(
+                      '${widget.textParameter}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 56,
+                        color: Color(0xffFFFFFF),
+                      ),
+                    ),
                   ),
-                ),
+                  widget.checkUnit
+                      ? Text(
+                        widget.unit,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 56,
+                          color: Color(0xffFFFFFF),
+                        ),
+                      )
+                      : Text(widget.unit.toString()),
+                ],
               ),
             ),
           ],
         ),
         SizedBox(height: 32),
-        if (classVisibility is VisibilityView)
-          VisibilityButton()
-        else
-          Text(
-            widget.textState,
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-          ),
+
+        Text(
+          widget.textState,
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+        ),
       ],
     );
   }

@@ -13,3 +13,8 @@ final class SetThemeEvent extends AppEvent {
   @override
   List<Object> get props => [imageTheme];
 }
+
+final class SetThermometerEvent {
+  final String imageThermometer;
+  const SetThermometerEvent({required this.imageThermometer});
+}

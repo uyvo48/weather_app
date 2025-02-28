@@ -5,16 +5,16 @@ import 'package:weather_app/component/app_bar_setting_item.dart';
 import '../../util/images.dart';
 import '../model/line_chart_item.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class WindView extends StatefulWidget {
+  const WindView({super.key});
 
   @override
-  _MyHomePageState createState() {
-    return _MyHomePageState();
+  _WindViewState createState() {
+    return _WindViewState();
   }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _WindViewState extends State<WindView> {
   late TooltipBehavior _tooltipBehavior;
   late TrackballBehavior _trackballBehavior;
   late CrosshairBehavior _crossHairBehavior;

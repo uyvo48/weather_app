@@ -13,6 +13,18 @@ class WeatherForecastView extends StatefulWidget {
 }
 
 class _WeatherForecastViewState extends State<WeatherForecastView> {
+  bool useFahrenheit = false; // Đổi tên biến: true = F°, false = C°
+  //round ham dung de lam tron so nguyen
+  // Hàm hiển thị nhiệt độ với đơn vị
+  String getTemperatureText(double celsius) {
+    if (useFahrenheit) {
+      final fahrenheit = (celsius * 1.8 + 32).round();
+      return '$fahrenheit°F'; // Hiển thị dạng °F
+    } else {
+      return '${celsius.round()}°C'; // Hiển thị dạng 25°C
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,18 +48,22 @@ class _WeatherForecastViewState extends State<WeatherForecastView> {
           ),
         ),
         title: Text(
-          'Language',
+          'Weather Forecast',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         actions: [
           Container(
             padding: EdgeInsets.all(8),
             width: 100,
-            child: ButtonWeatherForecast(),
+            child: ButtonWeatherForecast(
+              onUnitChanged: (value) {
+                setState(() {
+                  useFahrenheit = value;
+                });
+              },
+            ),
           ),
         ],
-
-        // actions: [ButtonWeatherForecast()],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,11 +88,11 @@ class _WeatherForecastViewState extends State<WeatherForecastView> {
                     fit: BoxFit.fitHeight,
                   ),
                   Text(
-                    '25°c',
+                    getTemperatureText(25), // Nhiệt độ chính
                     style: TextStyle(fontSize: 64, fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    'Feel like 28°c',
+                    'Feel like ${getTemperatureText(28)}',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
@@ -103,10 +119,11 @@ class _WeatherForecastViewState extends State<WeatherForecastView> {
                   padding: const EdgeInsets.all(8.0),
                   child: WeatherDayItem(
                     textDay: 'Mon',
-                    minTemperature: '25°',
-                    maxTemperature: '28°',
+                    minTempCelsius: 25, // Đổi tên và kiểu dữ liệu thành số
+                    maxTempCelsius: 28,
                     iconState: iconSun,
                     textStateWeatherForecast: 'rain',
+                    useFahrenheit: useFahrenheit, // Truyền trạng thái
                   ),
                 );
               },

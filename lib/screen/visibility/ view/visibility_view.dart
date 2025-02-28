@@ -12,6 +12,14 @@ class VisibilityView extends StatefulWidget {
 }
 
 class _VisibilityViewState extends State<VisibilityView> {
+  bool isMiles = false;
+  double kmValue = 24.4;
+
+  double _convertUnit(double kmValue) {
+    final double value = isMiles ? kmValue * 0.001 : kmValue;
+    return double.parse(value.toStringAsFixed(2));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,16 +27,22 @@ class _VisibilityViewState extends State<VisibilityView> {
       body: Column(
         children: [
           CirclePage(
-            color1: Color(0xff5363F3),
-            textParameter:
-                "24,14 \n"
-                "   km",
-            color2: Color(0xff4BCFF9),
+            checkUnit: true,
+            unit: isMiles ? "mi" : "km",
+            color1: isMiles ? Color(0xffFF6F61) : Color(0xff5363F3),
+            textParameter: _convertUnit(kmValue),
+            color2: isMiles ? Color(0xffFF6F61) : Color(0xff4BCFF9),
             located: 'Hoài Đức, Hà Nội',
             textAirQuality: '',
             textState: '',
           ),
-          VisibilityButton(),
+          VisibilityButton(
+            onUnitChanged: (value) {
+              setState(() {
+                isMiles = value;
+              });
+            },
+          ),
         ],
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 
 import 'app_event.dart';
 import 'app_state.dart';

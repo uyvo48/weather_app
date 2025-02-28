@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
-import 'package:weather_app/util/images.dart';
+import 'package:weather_app/screen/thermometer/controller/thermometer_controller.dart';
 
 import '../component/thermoment_item.dart';
 
@@ -12,6 +12,7 @@ class ThermomentView extends StatefulWidget {
 }
 
 class _ThermomentViewState extends State<ThermomentView> {
+  final ThermometerController thermometerController = ThermometerController();
   int selectedIndex = -1;
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class _ThermomentViewState extends State<ThermomentView> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.builder(
-          itemCount: 5,
+          itemCount: thermometerController.listImageThermometer.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
           ),
@@ -40,7 +41,7 @@ class _ThermomentViewState extends State<ThermomentView> {
                 padding: const EdgeInsets.all(8.0),
                 child: ThermomentItem(
                   choose: selectedIndex == index,
-                  image: iconThermometer,
+                  image: thermometerController.listImageThermometer[index],
                 ),
               ),
             );

@@ -15,8 +15,10 @@ class _HumidityViewState extends State<HumidityView> {
     return Scaffold(
       appBar: AppBarSettingItem(textSettingItem: 'Humidity'),
       body: CirclePage(
+        checkUnit: false,
+        unit: "",
         color1: Color(0xff5363F3),
-        textParameter: "100%",
+        textParameter: 100,
         color2: Color(0xff4BCFF9),
         located: 'Hoài Đức, Hà Nội',
         textAirQuality: '',

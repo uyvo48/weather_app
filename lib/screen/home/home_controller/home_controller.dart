@@ -56,7 +56,7 @@ class HomeController {
     SettingModel(iconThemes, 'Theme', AppRouter.themeScreen),
     SettingModel(iconLanguage, 'Language', AppRouter.languageScreen),
     SettingModel(iconContent, 'Modify my content', ''),
-    SettingModel(iconConditonSetting, 'Term of condition', ''),
+    SettingModel(iconConditonSetting1, 'Term of condition', ''),
     SettingModel(iconPrivacy, 'Privacy', ''),
     SettingModel(iconContact, 'Contact us', ''),
     SettingModel(iconShare, 'Share app', ''),

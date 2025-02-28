@@ -17,100 +17,132 @@ import '../component/weather_forcast.dart';
 import '../home_controller/home_controller.dart';
 
 class Premission extends StatefulWidget {
-  const Premission({super.key, d});
+  const Premission({super.key});
 
   @override
   State<Premission> createState() => PremissionState();
 }
 
 class PremissionState extends State<Premission> {
-  late StreamSubscription _streamSubCription;
-  bool isDeviceConnect = false;
+  late StreamSubscription _streamSubscription;
+  bool isDeviceConnected = false;
   bool isAlert = false;
   HomeController homeController = HomeController();
   Location location = Location();
+
   @override
   void initState() {
     super.initState();
-    internetConnection();
+    _checkInitialConnection(); // Kiểm tra kết nối ban đầu
+    _listenToConnectivityChanges(); // Lắng nghe thay đổi kết nối
   }
 
   @override
   void dispose() {
+    _streamSubscription.cancel(); // Hủy stream đúng cách
     super.dispose();
-    _streamSubCription.cancel();
   }
 
-  internetConnection() =>
-      _streamSubCription = Connectivity().onConnectivityChanged.listen((
-        result,
-      ) async {
-        if (!isDeviceConnect && isAlert == false) {
+  // Kiểm tra kết nối ban đầu
+  Future<void> _checkInitialConnection() async {
+    var connectivityResults = await Connectivity().checkConnectivity();
+    _updateConnectionStatus(connectivityResults);
+  }
+
+  // Lắng nghe thay đổi kết nối
+  void _listenToConnectivityChanges() {
+    _streamSubscription = Connectivity().onConnectivityChanged.listen((
+      results,
+    ) {
+      _updateConnectionStatus(results);
+    });
+  }
+
+  // Cập nhật trạng thái kết nối
+  void _updateConnectionStatus(List<ConnectivityResult> results) {
+    setState(() {
+      // Kiểm tra xem có kết nối nào trong danh sách không
+      if (results.contains(ConnectivityResult.none) && results.length == 1) {
+        isDeviceConnected = false;
+        if (!isAlert) {
           showDialogBox();
-          /*setState(() {
-            isAlert = true;
-          }*/
+          isAlert = true;
         }
-      });
-  showDialogBox() => showCupertinoDialog(
-    context: context,
-    builder:
-        (BuildContext context) => AlertDialog(
-          title: Image.asset(iconDisconnectedInternet),
-          actions: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'No internet connection',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  textAlign: TextAlign.center,
-                  'Check your internet connection and try again.',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                ),
-                SizedBox(height: 10),
+      } else {
+        isDeviceConnected = true;
+        if (isAlert) {
+          Navigator.of(
+            context,
+            rootNavigator: true,
+          ).pop(); // Đóng dialog nếu đang mở
+          isAlert = false;
+        }
+      }
+    });
+  }
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomAppButton(
-                      height: 46,
-                      width: 140,
-                      backgroundColor: Color(0xffFFFFFF),
-                      textColor: Color(0xff000000),
-                      text: 'Close',
-                      onPressed: () {
-                        GoRouter.of(context).pop();
-                      },
-                      textStyle: TextStyle(
-                        color: Color(0xff000000),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+  // Hiển thị dialog khi không có kết nối
+  void showDialogBox() {
+    showCupertinoDialog(
+      context: context,
+      builder:
+          (BuildContext context) => AlertDialog(
+            title: Image.asset(iconDisconnectedInternet),
+            actions: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'No internet connection',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    textAlign: TextAlign.center,
+                    'Check your internet connection and try again.',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomAppButton(
+                        height: 46,
+                        width: 140,
+                        backgroundColor: Color(0xffFFFFFF),
+                        textColor: Color(0xff000000),
+                        text: 'Close',
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Đóng dialog
+                        },
+                        textStyle: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    CustomAppButton(
-                      height: 46,
-                      width: 140,
-                      backgroundColor: Color(0xff28B2FF),
-                      onPressed: () {
-                        AppSettings.openAppSettings(type: AppSettingsType.wifi);
-                      },
-
-                      child: const Text(
-                        'Open Setting',
-                        style: TextStyle(color: Colors.white),
+                      CustomAppButton(
+                        height: 46,
+                        width: 140,
+                        backgroundColor: Color(0xff28B2FF),
+                        onPressed: () {
+                          AppSettings.openAppSettings(
+                            type: AppSettingsType.wifi,
+                          );
+                        },
+                        child: const Text(
+                          'Open Setting',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-  );
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +222,6 @@ class PremissionState extends State<Premission> {
                                 ],
                               ),
                         ),
-
                     width: 102,
                     backgroundColor: Color(0xff2196F3),
                     text: 'Allow',
@@ -204,20 +235,6 @@ class PremissionState extends State<Premission> {
             ),
             Stack(
               children: [
-                // Container(
-                //   width: MediaQuery.of(context).size.width,
-                //
-                //   decoration: BoxDecoration(
-                //     image: DecorationImage(
-                //       image: ExactAssetImage(widget.imageThemes.imageItem),
-                //     ),
-                //   ),
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //       color: Colors.white.withOpacity(0.1),
-                //     ),
-                //   ),
-                // ),
                 BlocBuilder<AppBloc, AppState>(
                   builder: (context, state) {
                     return Image.asset(
@@ -234,14 +251,13 @@ class PremissionState extends State<Premission> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Smart thermoeter',
+                                'Smart thermometer',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w800,
@@ -272,7 +288,6 @@ class PremissionState extends State<Premission> {
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey,
-
                                   spreadRadius: 5,
                                   blurRadius: 30,
                                   offset: Offset(0, 4),
@@ -305,7 +320,6 @@ class PremissionState extends State<Premission> {
                             ),
                             height: 240,
                             width: 90,
-
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: Column(
@@ -337,7 +351,6 @@ class PremissionState extends State<Premission> {
                               ),
                             ),
                           ),
-
                           Stack(
                             children: [
                               Container(
@@ -359,7 +372,6 @@ class PremissionState extends State<Premission> {
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-
                                   children: [
                                     Center(child: Image.asset(iconUv)),
                                     SizedBox(width: 12),

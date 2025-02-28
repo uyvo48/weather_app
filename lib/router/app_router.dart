@@ -16,6 +16,7 @@ import '../screen/thermometer/view/thermoment_view.dart';
 import '../screen/uv_index/view/uv_index_view.dart';
 import '../screen/visibility/ view/visibility_view.dart';
 import '../screen/weather_forecast/view/weather_forecast_view.dart';
+import '../wind/view/wind_view.dart';
 
 class AppRouter {
   static String intro = "intro";
@@ -157,7 +158,7 @@ class AppRouter {
             name: windScreen,
             path: windScreenPath,
             builder: (context, state) {
-              return VisibilityView();
+              return WindView();
             },
           ),
           GoRoute(

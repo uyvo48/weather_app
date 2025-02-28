@@ -2,7 +2,9 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 
 class ButtonWeatherForecast extends StatefulWidget {
-  const ButtonWeatherForecast({super.key});
+  final ValueChanged<bool> onUnitChanged; // Callback báo thay đổi đơn vị
+
+  const ButtonWeatherForecast({super.key, required this.onUnitChanged});
 
   @override
   State<ButtonWeatherForecast> createState() => _ButtonWeatherForecastState();
@@ -47,7 +49,11 @@ class _ButtonWeatherForecastState extends State<ButtonWeatherForecast> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 selectedIconScale: 1,
-                onChanged: (value) => setState(() => firstSwitchValue = value),
+
+                onChanged: (value) {
+                  setState(() => firstSwitchValue = value);
+                  widget.onUnitChanged(value); // Báo thay đổi đơn vị
+                },
               ),
             ),
           ],

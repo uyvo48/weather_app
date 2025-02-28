@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class VisibilityButton extends StatefulWidget {
-  const VisibilityButton({super.key});
+  final Function(bool) onUnitChanged; // Callback để thông báo thay đổi
+
+  const VisibilityButton({super.key, required this.onUnitChanged});
 
   @override
-  _VisibilityButtonState createState() {
-    return _VisibilityButtonState();
-  }
+  _VisibilityButtonState createState() => _VisibilityButtonState();
 }
 
 class _VisibilityButtonState extends State<VisibilityButton>
@@ -15,16 +15,16 @@ class _VisibilityButtonState extends State<VisibilityButton>
   final Duration _duration = Duration(milliseconds: 370);
   late Animation<Alignment> _animation;
   late AnimationController _animationController;
+  final Color _kmColor = Color(0xff4DBFF9);
+  final Color _miColor = Color(0xffFF6F61);
 
   @override
   void initState() {
     super.initState();
-
     _animationController = AnimationController(
       vsync: this,
       duration: _duration,
     );
-
     _animation = AlignmentTween(
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
@@ -48,7 +48,7 @@ class _VisibilityButtonState extends State<VisibilityButton>
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Km'),
+        Text('Km', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
         SizedBox(width: 10),
         AnimatedBuilder(
           animation: _animationController,
@@ -57,7 +57,6 @@ class _VisibilityButtonState extends State<VisibilityButton>
               width: 110,
               height: 40,
               padding: EdgeInsets.symmetric(horizontal: 4),
-
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -66,7 +65,7 @@ class _VisibilityButtonState extends State<VisibilityButton>
                     blurRadius: 12.0,
                   ),
                 ],
-                color: Color(0xff4DBFF9),
+                color: isChecked ? _miColor : _kmColor,
                 borderRadius: BorderRadius.all(Radius.circular(12)),
               ),
               child: Stack(
@@ -81,8 +80,8 @@ class _VisibilityButtonState extends State<VisibilityButton>
                           } else {
                             _animationController.forward();
                           }
-
                           isChecked = !isChecked;
+                          widget.onUnitChanged(isChecked); // Gọi callback
                         });
                       },
                       child: Stack(
@@ -122,7 +121,7 @@ class _VisibilityButtonState extends State<VisibilityButton>
           },
         ),
         SizedBox(width: 10),
-        Text('Mi'),
+        Text('Mi', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
       ],
     );
   }
