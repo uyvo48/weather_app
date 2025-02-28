@@ -324,7 +324,15 @@ class PremissionState extends State<Premission> {
                               padding: const EdgeInsets.all(8),
                               child: Column(
                                 children: [
-                                  Image.asset(iconThermometer),
+                                  BlocBuilder<AppBloc, AppState>(
+                                    builder: (context, state) {
+                                      return Image.asset(
+                                        state.thermometer,
+                                        height: 50,
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                  ),
                                   Text(
                                     '30°C/80°F',
                                     style: TextStyle(

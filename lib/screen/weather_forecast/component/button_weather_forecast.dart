@@ -52,7 +52,7 @@ class _ButtonWeatherForecastState extends State<ButtonWeatherForecast> {
 
                 onChanged: (value) {
                   setState(() => firstSwitchValue = value);
-                  widget.onUnitChanged(value); // Báo thay đổi đơn vị
+                  widget.onUnitChanged(value); //
                 },
               ),
             ),

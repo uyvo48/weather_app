@@ -14,11 +14,17 @@ Color goodColor1 = Color(0xff038603);
 Color goodColor2 = Color(0xff0EE400);
 Color moderateColor1 = Color(0xffB18B01);
 Color moderateColor2 = Color(0xffFFFF00);
-Color unhealthyColor1 = Color(0xffB53600);
-Color unhealthyColor2 = Color(0xffFF7EFF);
+Color unhealthyForSensitiveColor1 = Color(0xffB53600);
+Color unhealthyForSensitiveColor2 = Color(0xffFF7E00);
+Color unHealthyColor1 = Color(0xffA00000);
+Color unHealthyColor2 = Color(0xffD94F4F);
+Color veryUnHealthyColor1 = Color(0xff6B0076);
+Color veryUnHealthyColor2 = Color(0xffAE55B7);
+Color maroonColor1 = Color(0xff7B0E2C);
+Color maroonColor2 = Color(0xffC92251);
 
 class _AirQualityViewState extends State<AirQualityView> {
-  double textParameter = 51; // Giá trị AQI
+  double textParameter = 400; // Giá trị AQI
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +44,26 @@ class _AirQualityViewState extends State<AirQualityView> {
       color2 = moderateColor2;
       textAirQuality = 'Moderate';
       textState = 'Moderate';
-    } else {
-      color1 = unhealthyColor1;
-      color2 = unhealthyColor2;
+    } else if (textParameter > 51 && textParameter <= 100) {
+      color1 = unhealthyForSensitiveColor1;
+      color2 = unhealthyForSensitiveColor2;
+      textAirQuality = 'High';
+      textState = 'Unhealthy for Sensitive Groups ';
+    } else if (textParameter > 101 && textParameter <= 200) {
+      color1 = unHealthyColor1;
+      color2 = unHealthyColor2;
       textAirQuality = 'High';
       textState = 'Unhealthy';
+    } else if (textParameter > 201 && textParameter <= 300) {
+      color1 = veryUnHealthyColor1;
+      color2 = veryUnHealthyColor2;
+      textAirQuality = 'Very Unhealthy';
+      textState = 'Very Unhealthy';
+    } else {
+      color1 = unHealthyColor1;
+      color2 = unHealthyColor2;
+      textAirQuality = 'Hazardous';
+      textState = 'maroon';
     }
 
     return Scaffold(

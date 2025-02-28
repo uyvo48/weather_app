@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 
 class VisibilityButton extends StatefulWidget {
-  final Function(bool) onUnitChanged; // Callback để thông báo thay đổi
+  final bool isMiles;
+  final Function(bool) onUnitChanged;
+  final Color buttonColor; // Thêm thuộc tính để nhận màu từ state
 
-  const VisibilityButton({super.key, required this.onUnitChanged});
+  const VisibilityButton({
+    super.key,
+    required this.isMiles,
+    required this.onUnitChanged,
+    required this.buttonColor,
+  });
 
   @override
-  _VisibilityButtonState createState() => _VisibilityButtonState();
+  _VisibilityButtonState createState() {
+    return _VisibilityButtonState();
+  }
 }
 
 class _VisibilityButtonState extends State<VisibilityButton>
     with SingleTickerProviderStateMixin {
-  bool isChecked = false;
-  final Duration _duration = Duration(milliseconds: 370);
   late Animation<Alignment> _animation;
   late AnimationController _animationController;
-  final Color _kmColor = Color(0xff4DBFF9);
-  final Color _miColor = Color(0xffFF6F61);
+  final Duration _duration = const Duration(milliseconds: 370);
 
   @override
   void initState() {
@@ -35,6 +41,22 @@ class _VisibilityButtonState extends State<VisibilityButton>
         reverseCurve: Curves.bounceIn,
       ),
     );
+
+    if (widget.isMiles) {
+      _animationController.value = 1.0;
+    }
+  }
+
+  @override
+  void didUpdateWidget(VisibilityButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isMiles != oldWidget.isMiles) {
+      if (widget.isMiles) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
+    }
   }
 
   @override
@@ -48,15 +70,18 @@ class _VisibilityButtonState extends State<VisibilityButton>
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Km', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-        SizedBox(width: 10),
+        const Text(
+          'Km',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(width: 10),
         AnimatedBuilder(
           animation: _animationController,
           builder: (context, child) {
             return Container(
               width: 110,
               height: 40,
-              padding: EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -65,8 +90,8 @@ class _VisibilityButtonState extends State<VisibilityButton>
                     blurRadius: 12.0,
                   ),
                 ],
-                color: isChecked ? _miColor : _kmColor,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                color: widget.buttonColor, // Sử dụng màu từ state
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
               ),
               child: Stack(
                 children: <Widget>[
@@ -74,15 +99,12 @@ class _VisibilityButtonState extends State<VisibilityButton>
                     alignment: _animation.value,
                     child: GestureDetector(
                       onTap: () {
-                        setState(() {
-                          if (_animationController.isCompleted) {
-                            _animationController.reverse();
-                          } else {
-                            _animationController.forward();
-                          }
-                          isChecked = !isChecked;
-                          widget.onUnitChanged(isChecked); // Gọi callback
-                        });
+                        if (_animationController.isCompleted) {
+                          _animationController.reverse();
+                        } else {
+                          _animationController.forward();
+                        }
+                        widget.onUnitChanged(!widget.isMiles);
                       },
                       child: Stack(
                         alignment: Alignment.center,
@@ -99,7 +121,7 @@ class _VisibilityButtonState extends State<VisibilityButton>
                           Container(
                             width: 22,
                             height: 22,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.white,
                               boxShadow: [
@@ -120,8 +142,11 @@ class _VisibilityButtonState extends State<VisibilityButton>
             );
           },
         ),
-        SizedBox(width: 10),
-        Text('Mi', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+        const SizedBox(width: 10),
+        const Text(
+          'Mi',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
       ],
     );
   }

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:weather_app/app_bloc/app_bloc.dart';
+import 'package:weather_app/app_bloc/app_event.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
 import 'package:weather_app/screen/thermometer/controller/thermometer_controller.dart';
 
+import '../../../router/app_router.dart';
 import '../component/thermoment_item.dart';
 
 class ThermomentView extends StatefulWidget {
@@ -36,6 +41,15 @@ class _ThermomentViewState extends State<ThermomentView> {
                 setState(() {
                   selectedIndex = -1;
                 });
+              },
+              onTap: () {
+                context.read<AppBloc>().add(
+                  SetThermometerEvent(
+                    imageThermometer:
+                        thermometerController.listImageThermometer[index],
+                  ),
+                );
+                GoRouter.of(context).go(AppRouter.homeScreen);
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

@@ -1,50 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
 import 'package:weather_app/component/circle_page.dart';
 
+import '../../../app_bloc/app_bloc.dart';
+import '../../../app_bloc/app_event.dart';
+import '../../../app_bloc/app_state.dart';
 import '../component/visibility_switch.dart';
 
-class VisibilityView extends StatefulWidget {
+class VisibilityView extends StatelessWidget {
   const VisibilityView({super.key});
 
   @override
-  State<VisibilityView> createState() => _VisibilityViewState();
-}
-
-class _VisibilityViewState extends State<VisibilityView> {
-  bool isMiles = false;
-  double kmValue = 24.4;
-
-  double _convertUnit(double kmValue) {
-    final double value = isMiles ? kmValue * 0.001 : kmValue;
-    return double.parse(value.toStringAsFixed(2));
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarSettingItem(textSettingItem: 'Visibility'),
-      body: Column(
-        children: [
-          CirclePage(
-            checkUnit: true,
-            unit: isMiles ? "mi" : "km",
-            color1: isMiles ? Color(0xffFF6F61) : Color(0xff5363F3),
-            textParameter: _convertUnit(kmValue),
-            color2: isMiles ? Color(0xffFF6F61) : Color(0xff4BCFF9),
-            located: 'Hoài Đức, Hà Nội',
-            textAirQuality: '',
-            textState: '',
+    return BlocBuilder<AppBloc, AppState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: const AppBarSettingItem(textSettingItem: 'Visibility'),
+          body: Column(
+            children: [
+              CirclePage(
+                checkUnit: true,
+                unit: state.visibilityUnit,
+                color1: state.visibilityColor, // Gradient bắt đầu
+                textParameter: state.visibilityParameter,
+                color2: state.visibilityColorEnd, // Gradient kết thúc
+                located: 'Hoài Đức, Hà Nội',
+                textAirQuality: '',
+                textState: '',
+              ),
+              VisibilityButton(
+                isMiles: state.visibilityUnit == "mi",
+                buttonColor: state.buttonColor, // Truyền màu button từ state
+                onUnitChanged: (value) {
+                  context.read<AppBloc>().add(
+                    SetVisibilityEvent(
+                      visibilityColor: state.visibilityColor,
+                      visibilityColorEnd: state.visibilityColorEnd,
+                      buttonColor: state.buttonColor,
+                      visibilityParameter: state.visibilityParameter,
+                      visibilityUnit: value ? "mi" : "km",
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
-          VisibilityButton(
-            onUnitChanged: (value) {
-              setState(() {
-                isMiles = value;
-              });
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
