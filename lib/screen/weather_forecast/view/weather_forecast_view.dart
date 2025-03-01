@@ -55,16 +55,13 @@ class _WeatherForecastViewState extends State<WeatherForecastView> {
                 width: 100,
                 child: ButtonWeatherForecast(
                   onUnitChanged: (value) {
-                    setState(() {
-                      useFahrenheit = value;
-                      context.read<WeatherForecastBloc>().add(
-                        ChangeTemperatureEvent(
-                          unit: state.unit,
-                          textTemperature: state.textTemperature,
-                          checkButton: useFahrenheit,
-                        ),
-                      );
-                    });
+                    context.read<WeatherForecastBloc>().add(
+                      ChangeTemperatureEvent(
+                        unit: state.unit,
+                        textTemperature: state.textTemperature,
+                        checkButton: value,
+                      ),
+                    );
                   },
                 ),
               ),
@@ -93,14 +90,14 @@ class _WeatherForecastViewState extends State<WeatherForecastView> {
                         fit: BoxFit.fitHeight,
                       ),
                       Text(
-                        '${state.textTemperature}',
+                        '${state.textTemperature} °${state.unit}',
                         style: TextStyle(
                           fontSize: 64,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       Text(
-                        'Feel like ° ${state.textTemperature}',
+                        'Feel like  ${state.textTemperature} °${state.unit}',
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 16,
@@ -127,8 +124,8 @@ class _WeatherForecastViewState extends State<WeatherForecastView> {
                       padding: const EdgeInsets.all(8.0),
                       child: WeatherDayItem(
                         textDay: 'Mon',
-                        minTempCelsius: 25,
-                        maxTempCelsius: 28,
+                        minTempCelsius: state.textTemperature,
+                        maxTempCelsius: state.textTemperature,
                         iconState: iconSun,
                         textStateWeatherForecast: 'rain',
                         useFahrenheit: useFahrenheit,

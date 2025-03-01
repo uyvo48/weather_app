@@ -13,16 +13,16 @@ class WeatherForecastBloc
     ChangeTemperatureEvent event,
     Emitter<WeatherForecastState> emit,
   ) {
-    final isCheckButton = state.checkButton;
-    final newParameter =
-        isCheckButton
-            ? (state.textTemperature) * 1.8 + 32
-            : ((state.textTemperature) - 32) / 1.8;
+    final double currentTemp = state.textTemperature;
+    final double newParameter =
+        event.checkButton
+            ? (currentTemp * 1.8 + 32)
+            : ((currentTemp - 32) / 1.8);
     emit(
       state.copyWith(
         textTemperature: newParameter,
-        unit: isCheckButton ? 'F' : 'C',
-        checkButton: isCheckButton,
+        unit: event.checkButton ? 'F' : 'C',
+        checkButton: event.checkButton, // Cập nhật trạng thái mới
       ),
     );
   }
