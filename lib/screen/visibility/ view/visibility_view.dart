@@ -25,7 +25,8 @@ class VisibilityView extends StatelessWidget {
                 color1: state.visibilityColor, // Gradient bắt đầu
                 textParameter: state.visibilityParameter,
                 color2: state.visibilityColorEnd, // Gradient kết thúc
-                located: 'Hoài Đức, Hà Nội',
+                located:
+                    'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
                 textAirQuality: '',
                 textState: '',
               ),

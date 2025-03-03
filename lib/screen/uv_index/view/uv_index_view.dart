@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/app_bloc/app_bloc.dart';
+import 'package:weather_app/app_bloc/app_state.dart';
 import 'package:weather_app/component/circle_page.dart';
 
 import '../../../component/app_bar_setting_item.dart';
@@ -30,88 +29,10 @@ Color maroonColor2 = Color(0xffC92251);
 class _UvIndexViewState extends State<UvIndexView> {
   double textParameter = 0;
   bool isLoading = true;
-  double? latitude; // Tọa độ từ thiết bị
-  double? longitude;
-  String locationName = ''; // Hiển thị tọa độ từ API
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
-  }
-
-  Future<void> _getCurrentLocation() async {
-    LocationPermission permission;
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Location permissions are denied.')),
-        );
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Location permissions are permanently denied.')),
-      );
-      return;
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-
-    setState(() {
-      latitude = position.latitude;
-      longitude = position.longitude;
-    });
-
-    fetchData();
-  }
-
-  Future<void> fetchData() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      final uvUrl = Uri.parse(
-        'https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&daily=uv_index_max',
-      );
-
-      final uvResponse = await http.get(uvUrl);
-      if (uvResponse.statusCode == 200) {
-        final uvData = json.decode(uvResponse.body);
-        final uvIndex = uvData['daily']['uv_index_max'][0];
-        final apiLatitude = double.parse(
-          uvData['latitude'].toString(),
-        ).toStringAsFixed(2); // Làm tròn 2 chữ số
-        final apiLongitude = double.parse(
-          uvData['longitude'].toString(),
-        ).toStringAsFixed(2);
-
-        setState(() {
-          textParameter = uvIndex.toDouble();
-          locationName = 'Lat: $apiLatitude, Lon: $apiLongitude';
-          isLoading = false;
-        });
-      } else {
-        throw Exception('Failed to load UV Index');
-      }
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-        locationName = 'Unknown Location';
-      });
-      print('Error fetching data: $e');
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Failed to load data')));
-    }
   }
 
   @override
@@ -155,20 +76,22 @@ class _UvIndexViewState extends State<UvIndexView> {
 
     return Scaffold(
       appBar: AppBarSettingItem(textSettingItem: 'UV Index'),
-      body: Center(
-        child:
-            isLoading
-                ? CircularProgressIndicator()
-                : CirclePage(
-                  unit: "",
-                  textParameter: textParameter,
-                  color1: color1,
-                  color2: color2,
-                  located: locationName, // Tọa độ từ API
-                  textAirQuality: textAirQuality,
-                  textState: textState,
-                  checkUnit: false,
-                ),
+      body: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          return Center(
+            child: CirclePage(
+              unit: "",
+              textParameter: textParameter,
+              color1: color1,
+              color2: color2,
+              located: 'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
+              // Tọa độ từ API
+              textAirQuality: textAirQuality,
+              textState: textState,
+              checkUnit: false,
+            ),
+          );
+        },
       ),
     );
   }

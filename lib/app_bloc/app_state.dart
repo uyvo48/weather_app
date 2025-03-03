@@ -12,8 +12,11 @@ class AppState extends Equatable {
   final Color buttonColor; // Màu của VisibilityButton
   final double visibilityParameter;
   final String visibilityUnit;
-
+  final double latitude;
+  final double longitude;
   const AppState({
+    required this.longitude,
+    required this.latitude,
     required this.theme,
     required this.thermometer,
     required this.visibilityColor,
@@ -25,6 +28,8 @@ class AppState extends Equatable {
 
   factory AppState.init() {
     return AppState(
+      latitude: 0,
+      longitude: 0,
       theme: ThemeController().listImageTheme.first,
       thermometer: ThermometerController().listImageThermometer.first,
       visibilityColor: const Color(0xff5363F3),
@@ -43,8 +48,12 @@ class AppState extends Equatable {
     Color? buttonColor,
     double? visibilityParameter,
     String? visibilityUnit,
+    double? longitude,
+    double? latitude,
   }) {
     return AppState(
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
       theme: theme ?? this.theme,
       thermometer: thermometer ?? this.thermometer,
       visibilityColor: visibilityColor ?? this.visibilityColor,
@@ -64,5 +73,7 @@ class AppState extends Equatable {
     visibilityColor,
     visibilityColorEnd,
     buttonColor,
+    latitude,
+    longitude,
   ];
 }

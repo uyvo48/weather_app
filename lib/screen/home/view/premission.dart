@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
+import 'package:weather_app/app_bloc/app_event.dart';
 
 import '../../../app_bloc/app_bloc.dart';
 import '../../../app_bloc/app_state.dart';
@@ -35,6 +36,7 @@ class PremissionState extends State<Premission> {
     super.initState();
     _checkInitialConnection(); // Kiểm tra kết nối ban đầu
     _listenToConnectivityChanges(); // Lắng nghe thay đổi kết nối
+    context.read<AppBloc>().add(SetLocationEvent());
   }
 
   @override
@@ -267,12 +269,16 @@ class PremissionState extends State<Premission> {
                                 children: [
                                   Image.asset(iconLocation),
                                   SizedBox(width: 8),
-                                  Text(
-                                    'Hoài Đức, Hoài Đức',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                  BlocBuilder<AppBloc, AppState>(
+                                    builder: (context, state) {
+                                      return Text(
+                                        'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ],
                               ),

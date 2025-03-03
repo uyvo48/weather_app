@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 class HomeState extends Equatable {
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   const HomeState({required this.latitude, required this.longitude});
   @override
   List<Object?> get props => [];
   factory HomeState.init() {
-    return HomeState(latitude: "", longitude: "");
+    return HomeState(latitude: 0, longitude: 0);
   }
-  HomeState copyWith({String? latitude, String? longitude}) {
+  HomeState copyWith({double? latitude, double? longitude}) {
     return HomeState(
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,

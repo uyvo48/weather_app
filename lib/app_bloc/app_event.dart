@@ -46,3 +46,5 @@ final class SetVisibilityEvent extends AppEvent {
     visibilityUnit,
   ];
 }
+
+final class SetLocationEvent extends AppEvent {}
