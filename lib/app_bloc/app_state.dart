@@ -12,8 +12,13 @@ class AppState extends Equatable {
   final Color buttonColor; // Màu của VisibilityButton
   final double visibilityParameter;
   final String visibilityUnit;
-
+  final double latitude;
+  final double longitude;
+  final double uvIndexMax;
   const AppState({
+    required this.uvIndexMax,
+    required this.longitude,
+    required this.latitude,
     required this.theme,
     required this.thermometer,
     required this.visibilityColor,
@@ -25,12 +30,15 @@ class AppState extends Equatable {
 
   factory AppState.init() {
     return AppState(
+      uvIndexMax: 1,
+      latitude: 0,
+      longitude: 0,
       theme: ThemeController().listImageTheme.first,
       thermometer: ThermometerController().listImageThermometer.first,
       visibilityColor: const Color(0xff5363F3),
       visibilityColorEnd: const Color(0xff4BcFF9),
       buttonColor: const Color(0xff4DBFF9),
-      visibilityParameter: 24.4,
+      visibilityParameter: 0,
       visibilityUnit: "km",
     );
   }
@@ -43,8 +51,14 @@ class AppState extends Equatable {
     Color? buttonColor,
     double? visibilityParameter,
     String? visibilityUnit,
+    double? longitude,
+    double? latitude,
+    double? uvIndexMax,
   }) {
     return AppState(
+      uvIndexMax: uvIndexMax ?? this.uvIndexMax,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
       theme: theme ?? this.theme,
       thermometer: thermometer ?? this.thermometer,
       visibilityColor: visibilityColor ?? this.visibilityColor,
@@ -64,5 +78,8 @@ class AppState extends Equatable {
     visibilityColor,
     visibilityColorEnd,
     buttonColor,
+    latitude,
+    longitude,
+    uvIndexMax,
   ];
 }

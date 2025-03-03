@@ -1,4 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/app_bloc/app_bloc.dart';
+import 'package:weather_app/app_bloc/app_state.dart';
 
 import '../util/images.dart';
 
@@ -15,6 +18,7 @@ class CirclePage extends StatefulWidget {
     required this.unit,
     required this.checkUnit,
   });
+
   final bool checkUnit;
   final String unit;
   final String textAirQuality;
@@ -42,10 +46,14 @@ class _CirclePageState extends State<CirclePage> {
           children: [
             Image.asset(iconLocation),
             Center(
-              child: Text(
-                widget.located,
+              child: BlocBuilder<AppBloc, AppState>(
+                builder: (context, state) {
+                  return Text(
+                    'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
 
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+                  );
+                },
               ),
             ),
           ],

@@ -1,7 +1,5 @@
-import 'dart:async';
-
-import 'package:bloc/bloc.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'event.dart';
 import 'state.dart';
@@ -10,19 +8,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeState.init()) {
     on<LocationInitEvent>(onLocationHome);
   }
+}
 
-  Future<void> onLocationHome(
-    LocationInitEvent event,
-    Emitter<HomeState> emit,
-  ) async {
-    var client = http.Client();
-    try {
-      var response = await client.post(
-        Uri.https('example.com', 'whatsit/create'),
-        body: {'name': 'doodle', 'color': 'blue'},
-      );
-    } finally {
-      client.close();
+void onLocationHome(LocationInitEvent event, Emitter<HomeState> emit) async {
+  LocationPermission permission = await Geolocator.checkPermission();
+
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return; // Người dùng từ chối quyền
     }
   }
+  Position position = await Geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.high,
+  );
+  emit(HomeState(latitude: position.latitude, longitude: position.longitude));
 }

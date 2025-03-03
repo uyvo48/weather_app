@@ -46,3 +46,7 @@ final class SetVisibilityEvent extends AppEvent {
     visibilityUnit,
   ];
 }
+
+final class SetLocationEvent extends AppEvent {}
+
+final class SetUvIndexMax extends AppEvent {}

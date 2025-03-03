@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/app_bloc/app_bloc.dart';
+import 'package:weather_app/app_bloc/app_state.dart';
 
 import '../../../component/app_bar_setting_item.dart';
 import '../../../component/circle_page.dart';
@@ -68,20 +71,25 @@ class _AirQualityViewState extends State<AirQualityView> {
 
     return Scaffold(
       appBar: AppBarSettingItem(textSettingItem: 'Hoài Đức'),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CirclePage(
-            unit: "",
-            textParameter: textParameter,
-            color1: color1,
-            color2: color2,
-            located: 'Hoài Đức, Hà Nội',
-            textAirQuality: textAirQuality,
-            textState: textState,
-            checkUnit: false,
-          ),
-        ],
+      body: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CirclePage(
+                unit: "",
+                textParameter: textParameter,
+                color1: color1,
+                color2: color2,
+                located:
+                    'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
+                textAirQuality: textAirQuality,
+                textState: textState,
+                checkUnit: false,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

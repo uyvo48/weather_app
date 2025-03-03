@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/app_bloc/app_bloc.dart';
+import 'package:weather_app/app_bloc/app_state.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
 
 import '../../../util/images.dart';
@@ -22,9 +25,13 @@ class _PollenViewState extends State<PollenView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(iconLocation),
-              Text(
-                'Hoài Đức, Hà Nội',
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+              BlocBuilder<AppBloc, AppState>(
+                builder: (context, state) {
+                  return Text(
+                    'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+                  );
+                },
               ),
             ],
           ),

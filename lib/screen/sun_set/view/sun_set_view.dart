@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
 
 import '../ component/sun_time_item.dart';
+import '../../../app_bloc/app_bloc.dart';
+import '../../../app_bloc/app_state.dart';
 import '../../../util/images.dart';
 
 class SunSetView extends StatefulWidget {
@@ -23,10 +26,13 @@ class _SunSetViewState extends State<SunSetView> {
 
             children: [
               Image.asset(iconLocation),
-              Text(
-                'Hoài Đức, Hà Nội',
-
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+              BlocBuilder<AppBloc, AppState>(
+                builder: (context, state) {
+                  return Text(
+                    'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+                  );
+                },
               ),
             ],
           ),
