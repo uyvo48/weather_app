@@ -68,13 +68,18 @@ class _UvIndexViewState extends State<UvIndexView> {
             textState = 'N/A';
           }
 
+    return Scaffold(
+      appBar: AppBarSettingItem(textSettingItem: 'UV Index'),
+      body: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
           return Center(
             child: CirclePage(
               unit: "",
-              textParameter: uvIndex,
+              textParameter: textParameter,
               color1: color1,
               color2: color2,
               located: 'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
+              // Tọa độ từ API
               textAirQuality: textAirQuality,
               textState: textState,
               checkUnit: false,

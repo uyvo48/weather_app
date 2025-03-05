@@ -18,8 +18,12 @@ class AppState extends Equatable {
   final double uvIndexMax;
   final double? rawVisibility; // Thêm trường mới để lưu visibility gốc (mét)
 
+  final double latitude;
+  final double longitude;
   const AppState({
     required this.uvIndexMax,
+    required this.longitude,
+    required this.latitude,
     required this.longitude,
     required this.latitude,
     required this.theme,
@@ -44,7 +48,6 @@ class AppState extends Equatable {
       buttonColor: const Color(0xff4DBFF9),
       visibilityParameter: 0,
       visibilityUnit: "km",
-      rawVisibility: null, // Giá trị ban đầu là null
     );
   }
 
@@ -65,6 +68,7 @@ class AppState extends Equatable {
       uvIndexMax: uvIndexMax ?? this.uvIndexMax,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+
       theme: theme ?? this.theme,
       thermometer: thermometer ?? this.thermometer,
       visibilityColor: visibilityColor ?? this.visibilityColor,
@@ -87,6 +91,7 @@ class AppState extends Equatable {
     buttonColor,
     latitude,
     longitude,
+
     uvIndexMax,
     rawVisibility, // Thêm vào props
   ];

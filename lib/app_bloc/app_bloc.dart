@@ -1,11 +1,8 @@
 import 'dart:ui';
 
-import 'package:bloc/src/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 import 'package:geolocator/geolocator.dart';
 
-import '../model/weather.dart';
-import '../service/weather_service.dart';
 import 'app_event.dart';
 import 'app_state.dart';
 
@@ -15,8 +12,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<SetThermometerEvent>(_onChangeImageThermometer);
     on<SetVisibilityEvent>(_onChangeVisibility);
     on<SetLocationEvent>(onLocationHome);
+    on<SetLocationEvent>(onLocationHome);
     on<SetUvIndexMax>(_onUvIndex);
-    add(SetLocationEvent());
   }
 
   void _onChangeImageTheme(SetThemeEvent event, Emitter<AppState> emit) {
@@ -73,6 +70,37 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       );
     }
   }
+    emit(
+      state.copyWith(
+        visibilityColor: newColorStart,
+        visibilityColorEnd: newColorEnd,
+        buttonColor: newButtonColor,
+        visibilityParameter: double.parse(newParameter.toStringAsFixed(2)),
+        visibilityUnit: event.visibilityUnit.toLowerCase(),
+      ),
+    );
+  }
+
+  void onLocationHome(AppEvent event, Emitter<AppState> emit) async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return; // Người dùng từ chối quyền
+      }
+    }
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    emit(
+      state.copyWith(
+        longitude: position.latitude,
+        latitude: position.longitude,
+      ),
+    );
+  }
+}
 
   void onLocationHome(AppEvent event, Emitter<AppState> emit) async {
     try {
