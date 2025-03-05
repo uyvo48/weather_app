@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/app_bloc/app_bloc.dart';
+import 'package:weather_app/app_bloc/app_state.dart';
 
 class VisibilityButton extends StatefulWidget {
   final bool isMiles;
@@ -22,7 +25,7 @@ class _VisibilityButtonState extends State<VisibilityButton>
     with SingleTickerProviderStateMixin {
   late Animation<Alignment> _animation;
   late AnimationController _animationController;
-  final Duration _duration = const Duration(milliseconds: 370);
+  final Duration _duration = const Duration(milliseconds: 100);
 
   @override
   void initState() {
@@ -75,70 +78,76 @@ class _VisibilityButtonState extends State<VisibilityButton>
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         const SizedBox(width: 10),
-        AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) {
-            return Container(
-              width: 110,
-              height: 40,
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    spreadRadius: -12.0,
-                    blurRadius: 12.0,
-                  ),
-                ],
-                color: widget.buttonColor, // Sử dụng màu từ state
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-              ),
-              child: Stack(
-                children: <Widget>[
-                  Align(
-                    alignment: _animation.value,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (_animationController.isCompleted) {
-                          _animationController.reverse();
-                        } else {
-                          _animationController.forward();
-                        }
-                        widget.onUnitChanged(!widget.isMiles);
-                      },
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 34,
-                            height: 34,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              shape: BoxShape.rectangle,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            width: 22,
-                            height: 22,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xffEBEBEB),
-                                  blurRadius: 4,
-                                  offset: Offset(1, 1),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+        BlocBuilder<AppBloc, AppState>(
+          builder: (context, state) {
+            return AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Container(
+                  width: 110,
+                  height: 40,
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        spreadRadius: -12.0,
+                        blurRadius: 12.0,
                       ),
-                    ),
+                    ],
+                    color: widget.buttonColor, // Sử dụng màu từ state
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
                   ),
-                ],
-              ),
+                  child: Stack(
+                    children: <Widget>[
+                      Align(
+                        alignment: _animation.value,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (_animationController.isCompleted) {
+                              _animationController.reverse();
+                            } else {
+                              _animationController.forward();
+                            }
+                            widget.onUnitChanged(!widget.isMiles);
+                            print(' this unit is Mile : ${widget.isMiles}');
+                            print(' this unit is ${state.visibilityUnit}');
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: 34,
+                                height: 34,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  shape: BoxShape.rectangle,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Container(
+                                width: 22,
+                                height: 22,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0xffEBEBEB),
+                                      blurRadius: 4,
+                                      offset: Offset(1, 1),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             );
           },
         ),

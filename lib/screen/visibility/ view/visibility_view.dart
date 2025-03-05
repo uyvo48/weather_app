@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_app/component/app_bar_setting_item.dart';
-import 'package:weather_app/component/circle_page.dart';
 
 import '../../../app_bloc/app_bloc.dart';
 import '../../../app_bloc/app_event.dart';
 import '../../../app_bloc/app_state.dart';
+import '../../../component/app_bar_setting_item.dart';
+import '../../../component/circle_page.dart';
 import '../component/visibility_switch.dart';
 
-class VisibilityView extends StatelessWidget {
+class VisibilityView extends StatefulWidget {
   const VisibilityView({super.key});
+
+  @override
+  State<VisibilityView> createState() => _VisibilityViewState();
+}
+
+class _VisibilityViewState extends State<VisibilityView> {
+  @override
+  void initState() {
+    super.initState();
+    // Không cần gọi SetVisibilityEvent ở đây nữa vì onLocationHome sẽ xử lý
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +33,9 @@ class VisibilityView extends StatelessWidget {
               CirclePage(
                 checkUnit: true,
                 unit: state.visibilityUnit,
-                color1: state.visibilityColor, // Gradient bắt đầu
+                color1: state.visibilityColor,
                 textParameter: state.visibilityParameter,
-                color2: state.visibilityColorEnd, // Gradient kết thúc
+                color2: state.visibilityColorEnd,
                 located:
                     'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
                 textAirQuality: '',
@@ -32,16 +43,10 @@ class VisibilityView extends StatelessWidget {
               ),
               VisibilityButton(
                 isMiles: state.visibilityUnit == "mi",
-                buttonColor: state.buttonColor, // Truyền màu button từ state
+                buttonColor: state.buttonColor,
                 onUnitChanged: (value) {
                   context.read<AppBloc>().add(
-                    SetVisibilityEvent(
-                      visibilityColor: state.visibilityColor,
-                      visibilityColorEnd: state.visibilityColorEnd,
-                      buttonColor: state.buttonColor,
-                      visibilityParameter: state.visibilityParameter,
-                      visibilityUnit: value ? "mi" : "km",
-                    ),
+                    SetVisibilityEvent(visibilityUnit: value ? "mi" : "km"),
                   );
                 },
               ),

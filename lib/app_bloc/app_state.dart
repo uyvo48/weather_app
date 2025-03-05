@@ -1,20 +1,23 @@
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
-import 'package:weather_app/screen/themes/controller/theme_controller.dart';
-import 'package:weather_app/screen/thermometer/controller/thermometer_controller.dart';
+
+import '../screen/themes/controller/theme_controller.dart';
+import '../screen/thermometer/controller/thermometer_controller.dart';
 
 class AppState extends Equatable {
   final String theme;
   final String thermometer;
-  final Color visibilityColor; // Màu bắt đầu gradient của CirclePage
-  final Color visibilityColorEnd; // Màu kết thúc gradient của CirclePage
-  final Color buttonColor; // Màu của VisibilityButton
+  final Color visibilityColor;
+  final Color visibilityColorEnd;
+  final Color buttonColor;
   final double visibilityParameter;
   final String visibilityUnit;
   final double latitude;
   final double longitude;
   final double uvIndexMax;
+  final double? rawVisibility; // Thêm trường mới để lưu visibility gốc (mét)
+
   const AppState({
     required this.uvIndexMax,
     required this.longitude,
@@ -26,6 +29,7 @@ class AppState extends Equatable {
     required this.buttonColor,
     required this.visibilityParameter,
     required this.visibilityUnit,
+    this.rawVisibility, // Thêm vào constructor
   });
 
   factory AppState.init() {
@@ -40,6 +44,7 @@ class AppState extends Equatable {
       buttonColor: const Color(0xff4DBFF9),
       visibilityParameter: 0,
       visibilityUnit: "km",
+      rawVisibility: null, // Giá trị ban đầu là null
     );
   }
 
@@ -54,6 +59,7 @@ class AppState extends Equatable {
     double? longitude,
     double? latitude,
     double? uvIndexMax,
+    double? rawVisibility, // Thêm vào copyWith
   }) {
     return AppState(
       uvIndexMax: uvIndexMax ?? this.uvIndexMax,
@@ -66,6 +72,7 @@ class AppState extends Equatable {
       buttonColor: buttonColor ?? this.buttonColor,
       visibilityParameter: visibilityParameter ?? this.visibilityParameter,
       visibilityUnit: visibilityUnit ?? this.visibilityUnit,
+      rawVisibility: rawVisibility ?? this.rawVisibility,
     );
   }
 
@@ -81,5 +88,6 @@ class AppState extends Equatable {
     latitude,
     longitude,
     uvIndexMax,
+    rawVisibility, // Thêm vào props
   ];
 }

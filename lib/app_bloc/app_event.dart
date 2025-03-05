@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:equatable/equatable.dart';
 
 sealed class AppEvent extends Equatable {
@@ -23,28 +21,11 @@ final class SetThermometerEvent extends AppEvent {
 }
 
 final class SetVisibilityEvent extends AppEvent {
-  final Color visibilityColor;
-  final Color visibilityColorEnd;
-  final Color buttonColor;
-  final double visibilityParameter;
   final String visibilityUnit;
-
-  const SetVisibilityEvent({
-    required this.visibilityColor,
-    required this.visibilityColorEnd,
-    required this.buttonColor,
-    required this.visibilityParameter,
-    required this.visibilityUnit,
-  });
+  const SetVisibilityEvent({required this.visibilityUnit});
 
   @override
-  List<Object> get props => [
-    visibilityColor,
-    visibilityColorEnd,
-    buttonColor,
-    visibilityParameter,
-    visibilityUnit,
-  ];
+  List<Object> get props => [visibilityUnit];
 }
 
 final class SetLocationEvent extends AppEvent {}
