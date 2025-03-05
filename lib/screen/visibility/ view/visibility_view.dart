@@ -38,9 +38,7 @@ class _VisibilityViewState extends State<VisibilityView> {
                 color2: state.visibilityColorEnd, // Gradient kết thúc
                 located:
                     'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
-                color2: state.visibilityColorEnd,
-                located:
-                    'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
+
                 textAirQuality: '',
                 textState: '',
               ),

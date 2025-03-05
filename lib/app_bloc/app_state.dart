@@ -18,14 +18,11 @@ class AppState extends Equatable {
   final double uvIndexMax;
   final double? rawVisibility; // Thêm trường mới để lưu visibility gốc (mét)
 
-  final double latitude;
-  final double longitude;
   const AppState({
     required this.uvIndexMax,
     required this.longitude,
     required this.latitude,
-    required this.longitude,
-    required this.latitude,
+
     required this.theme,
     required this.thermometer,
     required this.visibilityColor,
