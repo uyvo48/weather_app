@@ -31,3 +31,7 @@ final class SetVisibilityEvent extends AppEvent {
 final class SetLocationEvent extends AppEvent {}
 
 final class SetUvIndexMax extends AppEvent {}
+
+final class SetHumidity extends AppEvent {}
+
+final class SetAirQuality extends AppEvent {}

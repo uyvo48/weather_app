@@ -21,6 +21,7 @@ class WeatherService {
       Weather weather = Weather.fromJson(jsonData);
       print(weather.hourly?.visibility.toString());
       print('Visibility data: ${weather.hourly!.visibility.last}');
+      print('humidity ${weather.hourly!.relativeHumidity2M.last}');
       return Weather.fromJson(jsonData);
     } else {
       print(

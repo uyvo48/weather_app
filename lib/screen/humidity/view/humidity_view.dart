@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/app_bloc/app_bloc.dart';
+import 'package:weather_app/app_bloc/app_state.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
 import 'package:weather_app/component/circle_page.dart';
 
@@ -14,15 +17,19 @@ class _HumidityViewState extends State<HumidityView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarSettingItem(textSettingItem: 'Humidity'),
-      body: CirclePage(
-        checkUnit: false,
-        unit: "",
-        color1: Color(0xff5363F3),
-        textParameter: 100,
-        color2: Color(0xff4BCFF9),
-        located: 'Hoài Đức, Hà Nội',
-        textAirQuality: '',
-        textState: '',
+      body: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          return CirclePage(
+            checkUnit: true,
+            unit: "%",
+            color1: Color(0xff5363F3),
+            textParameter: state.humidity,
+            color2: Color(0xff4BCFF9),
+            located: 'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
+            textAirQuality: '',
+            textState: '',
+          );
+        },
       ),
     );
   }

@@ -4,7 +4,6 @@ import 'package:weather_app/app_bloc/app_bloc.dart';
 import 'package:weather_app/app_bloc/app_state.dart';
 import 'package:weather_app/component/circle_page.dart';
 
-import '../../../app_bloc/app_event.dart';
 import '../../../component/app_bar_setting_item.dart';
 import '../../../util/color.dart';
 
@@ -21,7 +20,6 @@ class _UvIndexViewState extends State<UvIndexView> {
   @override
   void initState() {
     super.initState();
-    context.read<AppBloc>().add(SetUvIndexMax());
   }
 
   @override
@@ -67,26 +65,17 @@ class _UvIndexViewState extends State<UvIndexView> {
             textAirQuality = 'Unknown';
             textState = 'N/A';
           }
-
-          return Scaffold(
-            appBar: AppBarSettingItem(textSettingItem: 'UV Index'),
-            body: BlocBuilder<AppBloc, AppState>(
-              builder: (context, state) {
-                return Center(
-                  child: CirclePage(
-                    unit: "",
-                    textParameter: state.visibilityParameter,
-                    color1: color1,
-                    color2: color2,
-                    located:
-                        'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
-                    // Tọa độ từ API
-                    textAirQuality: textAirQuality,
-                    textState: textState,
-                    checkUnit: false,
-                  ),
-                );
-              },
+          return Center(
+            child: CirclePage(
+              unit: "",
+              textParameter: state.visibilityParameter,
+              color1: color1,
+              color2: color2,
+              located: 'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
+              // Tọa độ từ API
+              textAirQuality: textAirQuality,
+              textState: textState,
+              checkUnit: false,
             ),
           );
         },

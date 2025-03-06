@@ -120,7 +120,7 @@ class AppRouter {
           // UV
           GoRoute(
             name: uvIndexScreen,
-            path: humidityScreenPath,
+            path: uvIndexScreenPath,
             builder: (context, state) {
               return UvIndexView();
             },

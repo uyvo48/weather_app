@@ -200,7 +200,7 @@ class Daily extends Equatable {
 }
 
 class DailyUnits extends Equatable {
-  DailyUnits({
+  const DailyUnits({
     required this.time,
     required this.weatherCode,
     required this.temperature2MMax,

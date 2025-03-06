@@ -14,8 +14,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<SetThermometerEvent>(_onChangeImageThermometer);
     on<SetVisibilityEvent>(_onChangeVisibility);
     on<SetLocationEvent>(onLocationHome);
-
     on<SetUvIndexMax>(_onUvIndex);
+    on<SetHumidity>(_onHumidity);
+    on<SetAirQuality>(_onAirQuality);
   }
 
   void _onChangeImageTheme(SetThemeEvent event, Emitter<AppState> emit) {
@@ -63,7 +64,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ),
       );
     } else {
-      // Nếu rawVisibility chưa có, đặt giá trị mặc định
       emit(
         state.copyWith(
           visibilityParameter: 0,
@@ -93,13 +93,28 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         longitude: position.longitude,
       );
 
-      // Lấy rawVisibility từ API (ở đơn vị mét)
+      // Trích xuất rawVisibility và uvIndexMax từ weatherData
       double? rawVisibility;
       if (weatherData.hourly != null &&
           weatherData.hourly!.visibility.isNotEmpty) {
         rawVisibility = weatherData.hourly!.visibility.last.toDouble();
       }
 
+      double? uvIndex;
+      if (weatherData.daily != null &&
+          weatherData.daily!.uvIndexMax.isNotEmpty) {
+        uvIndex = weatherData.daily!.uvIndexMax.last.toDouble();
+      }
+      double? humidity;
+      if (weatherData.daily != null &&
+          weatherData.hourly!.relativeHumidity2M.isNotEmpty) {
+        humidity = weatherData.hourly!.relativeHumidity2M.last.toDouble();
+      }
+      double? airQuality;
+      if (weatherData.daily != null &&
+          weatherData.hourly!.relativeHumidity2M.isNotEmpty) {
+        humidity = weatherData.hourly!.relativeHumidity2M.last.toDouble();
+      }
       // Tính visibilityParameter dựa trên visibilityUnit hiện tại
       double visibilityParameter = 0;
       if (rawVisibility != null) {
@@ -123,9 +138,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final newButtonColor =
           isMiles ? const Color(0xffFF6F61) : const Color(0xff4DBFF9);
 
-      // Cập nhật state với tất cả thông tin
       emit(
         state.copyWith(
+          humidity: humidity,
+          weather: weatherData,
           longitude: position.longitude,
           latitude: position.latitude,
           rawVisibility: rawVisibility,
@@ -133,37 +149,36 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           visibilityColor: newColorStart,
           visibilityColorEnd: newColorEnd,
           buttonColor: newButtonColor,
+          uvIndexMax: uvIndex,
         ),
       );
     } catch (e) {
       print('Lỗi trong onLocationHome: $e');
-      // Có thể emit trạng thái lỗi nếu cần
     }
   }
 
-  void _onUvIndex(SetUvIndexMax event, Emitter<AppState> emit) async {
-    try {
-      print('Fetching UV Index...');
-      final WeatherService weatherService = WeatherService();
-      final Weather weatherData = await weatherService.fetchAllItems(
-        latitude: state.latitude,
-        longitude: state.longitude,
-      );
-
-      double? uvIndex;
-
-      if (weatherData.daily != null &&
-          weatherData.daily!.uvIndexMax.isNotEmpty) {
-        uvIndex = weatherData.daily!.uvIndexMax.last.toDouble();
-      } else {
-        uvIndex = null;
-        print('No UV Index available');
-      }
-
+  void _onUvIndex(SetUvIndexMax event, Emitter<AppState> emit) {
+    if (state.weather != null &&
+        state.weather!.daily != null &&
+        state.weather!.daily!.uvIndexMax.isNotEmpty) {
+      final uvIndex = state.weather!.daily!.uvIndexMax.last.toDouble();
       emit(state.copyWith(uvIndexMax: uvIndex));
-    } catch (e) {
-      print('Error fetching UV Index: $e');
+    } else {
       emit(state.copyWith(uvIndexMax: null));
     }
   }
+
+  void _onHumidity(SetHumidity event, Emitter<AppState> emit) {
+    if (state.weather != null &&
+        state.weather!.hourly != null &&
+        state.weather!.hourly!.relativeHumidity2M.isNotEmpty) {
+      final humidity =
+          state.weather!.hourly!.relativeHumidity2M.last.toDouble();
+      emit(state.copyWith(humidity: humidity));
+    } else {
+      emit(state.copyWith(humidity: null));
+    }
+  }
+
+  void _onAirQuality(SetAirQuality event, Emitter<AppState> emit) {}
 }

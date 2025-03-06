@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
+import 'package:weather_app/model/weather.dart';
 
 import '../screen/themes/controller/theme_controller.dart';
 import '../screen/thermometer/controller/thermometer_controller.dart';
@@ -17,8 +18,14 @@ class AppState extends Equatable {
   final double longitude;
   final double uvIndexMax;
   final double? rawVisibility; // Thêm trường mới để lưu visibility gốc (mét)
+  final Weather? weather;
+  final double humidity;
+  final double airQuality;
 
   const AppState({
+    required this.airQuality,
+    required this.humidity,
+    required this.weather,
     required this.uvIndexMax,
     required this.longitude,
     required this.latitude,
@@ -35,6 +42,9 @@ class AppState extends Equatable {
 
   factory AppState.init() {
     return AppState(
+      airQuality: 0,
+      humidity: 0,
+      weather: null,
       uvIndexMax: 1,
       latitude: 0,
       longitude: 0,
@@ -49,6 +59,7 @@ class AppState extends Equatable {
   }
 
   AppState copyWith({
+    double? airQuality,
     String? theme,
     String? thermometer,
     Color? visibilityColor,
@@ -59,13 +70,17 @@ class AppState extends Equatable {
     double? longitude,
     double? latitude,
     double? uvIndexMax,
-    double? rawVisibility, // Thêm vào copyWith
+    double? rawVisibility,
+    Weather? weather,
+    double? humidity,
   }) {
     return AppState(
+      airQuality: airQuality ?? this.airQuality,
+      humidity: humidity ?? this.humidity,
+      weather: weather ?? this.weather,
       uvIndexMax: uvIndexMax ?? this.uvIndexMax,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
-
       theme: theme ?? this.theme,
       thermometer: thermometer ?? this.thermometer,
       visibilityColor: visibilityColor ?? this.visibilityColor,
@@ -88,8 +103,8 @@ class AppState extends Equatable {
     buttonColor,
     latitude,
     longitude,
-
     uvIndexMax,
-    rawVisibility, // Thêm vào props
+    rawVisibility,
+    humidity, // Thêm vào props
   ];
 }
