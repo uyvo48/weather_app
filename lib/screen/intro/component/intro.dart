@@ -18,29 +18,31 @@ class IntroComponent extends StatelessWidget {
     return Column(
       children: [
         Stack(
+          clipBehavior: Clip.none,
           children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                ClipPath(
-                  child: Image.asset(
-                    image,
-                    fit: BoxFit.fitWidth,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ),
-                Positioned(bottom: -30, left: 160, child: Image.asset(icon)),
-              ],
+            ClipPath(
+              child: Image.asset(
+                image,
+                fit: BoxFit.fitWidth,
+                width: MediaQuery.of(context).size.width,
+              ),
+            ),
+            Positioned(
+              bottom: -30,
+              left: MediaQuery.of(context).size.width * 0.4,
+              child: Image.asset(icon),
             ),
           ],
         ),
-        SizedBox(height: 21),
+        SizedBox(height: 60),
         Text(
-          '$text1',
+          text1,
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
         ),
         Text(
-          '$text2',
+          text2,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,

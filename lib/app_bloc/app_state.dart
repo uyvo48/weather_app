@@ -17,7 +17,7 @@ class AppState extends Equatable {
   final double latitude;
   final double longitude;
   final double uvIndexMax;
-  final double? rawVisibility; // Thêm trường mới để lưu visibility gốc (mét)
+  final double? rawVisibility;
   final Weather? weather;
   final double humidity;
   final double airQuality;

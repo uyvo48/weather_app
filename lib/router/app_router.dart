@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:weather_app/screen/home/view/language.dart';
 
 import '../screen/air_quality/view/air_quality_view.dart';
 import '../screen/compass/view/compass_view.dart';
@@ -10,13 +11,14 @@ import '../screen/home/view/setting_view.dart';
 import '../screen/humidity/view/humidity_view.dart';
 import '../screen/intro/view/intro_view.dart';
 import '../screen/pollen/view/pollen_view.dart';
+import '../screen/snow_fall/snow_fall_view.dart';
 import '../screen/sun_set/view/sun_set_view.dart';
 import '../screen/themes/view/theme_view.dart';
 import '../screen/thermometer/view/thermoment_view.dart';
 import '../screen/uv_index/view/uv_index_view.dart';
 import '../screen/visibility/ view/visibility_view.dart';
 import '../screen/weather_forecast/view/weather_forecast_view.dart';
-import '../wind/view/wind_view.dart';
+import '../screen/wind/view/wind_view.dart';
 
 class AppRouter {
   static String intro = "intro";
@@ -114,6 +116,13 @@ class AppRouter {
                   return ThemeView();
                 },
               ),
+              GoRoute(
+                name: languageScreen,
+                path: languageScreenPath,
+                builder: (context, state) {
+                  return LanguageView();
+                },
+              ),
             ],
           ),
 
@@ -165,7 +174,7 @@ class AppRouter {
             name: snowFallScreen,
             path: snowFallScreenPath,
             builder: (context, state) {
-              return UvIndexView();
+              return SnowFallScreen();
             },
           ),
           GoRoute(

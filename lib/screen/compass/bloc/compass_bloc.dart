@@ -7,12 +7,10 @@ import 'package:weather_app/screen/compass/bloc/compass_event.dart';
 import 'package:weather_app/screen/compass/bloc/compass_state.dart';
 
 class CompassBloc extends Bloc<DisplayCompassEvent, CompassState> {
-  StreamSubscription? _compassSubscription;
-
   CompassBloc() : super(CompassState.init()) {
     on<DisplayCompassEvent>(_onDisplayHeading);
 
-    _compassSubscription = FlutterCompass.events?.listen((event) {
+    FlutterCompass.events?.listen((event) {
       if (event.heading != null) {
         add(DisplayCompassEvent(heading: event.heading!));
       }
@@ -34,11 +32,5 @@ class CompassBloc extends Bloc<DisplayCompassEvent, CompassState> {
         displayHeading: displayHeading,
       ),
     );
-  }
-
-  @override
-  Future<void> close() {
-    _compassSubscription?.cancel();
-    return super.close();
   }
 }

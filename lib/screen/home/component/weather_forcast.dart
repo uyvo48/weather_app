@@ -27,7 +27,6 @@ class ListWeather extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(5),
-                height: 48,
                 width: 48,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,

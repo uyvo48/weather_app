@@ -5,7 +5,8 @@ import 'package:weather_app/app_bloc/app_bloc.dart';
 import 'package:weather_app/app_bloc/app_state.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
 
-import '../../util/images.dart';
+import '../../../util/images.dart';
+
 import '../model/line_chart_item.dart';
 
 class WindView extends StatefulWidget {

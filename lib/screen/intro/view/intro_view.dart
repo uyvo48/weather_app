@@ -46,6 +46,7 @@ class IntroViewState extends State<IntroView> {
               },
             ),
           ),
+
           GestureDetector(
             onTap: () {
               if (currentIndex == introController.listIntro.length - 1) {
@@ -59,9 +60,8 @@ class IntroViewState extends State<IntroView> {
             },
 
             child: Container(
-              height: 56,
-              width: 280,
-
+              height: 50,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
@@ -80,7 +80,6 @@ class IntroViewState extends State<IntroView> {
               ),
             ),
           ),
-          SizedBox(height: 250),
         ],
       ),
     );

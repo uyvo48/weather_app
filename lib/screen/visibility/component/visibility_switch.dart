@@ -110,8 +110,6 @@ class _VisibilityButtonState extends State<VisibilityButton>
                               _animationController.forward();
                             }
                             widget.onUnitChanged(!widget.isMiles);
-                            print(' this unit is Mile : ${widget.isMiles}');
-                            print(' this unit is ${state.visibilityUnit}');
                           },
                           child: Stack(
                             alignment: Alignment.center,
