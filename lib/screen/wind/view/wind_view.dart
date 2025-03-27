@@ -1,13 +1,13 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:weather_app/app_bloc/app_bloc.dart';
 import 'package:weather_app/app_bloc/app_state.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
+import 'package:weather_app/component/custom_line_chart.dart';
 
 import '../../../util/images.dart';
-
-import '../model/line_chart_item.dart';
 
 class WindView extends StatefulWidget {
   const WindView({super.key});
@@ -19,51 +19,8 @@ class WindView extends StatefulWidget {
 }
 
 class _WindViewState extends State<WindView> {
-  late TooltipBehavior _tooltipBehavior;
-  late TrackballBehavior _trackballBehavior;
-  late CrosshairBehavior _crossHairBehavior;
-
-  List<LineChart> data = [
-    LineChart(1, 35),
-    LineChart(2, 28),
-    LineChart(3, 34),
-    // _SalesData(4, 32),
-    // _SalesData(5, 40),
-    // _SalesData(6, 45),
-    // _SalesData(7, 38),
-    // _SalesData(8, 42),
-    // _SalesData(9, 50),
-    // _SalesData(10, 47),
-    // _SalesData(11, 39),
-    // _SalesData(12, 41),
-    // _SalesData(13, 37),
-    // _SalesData(14, 29),
-    // _SalesData(15, 36),
-    // _SalesData(16, 33),
-    // _SalesData(17, 41),
-    // _SalesData(18, 46),
-    // _SalesData(19, 39),
-    // _SalesData(20, 43),
-    // _SalesData(21, 51),
-    // _SalesData(22, 48),
-    // _SalesData(23, 40),
-  ];
-
   @override
   void initState() {
-    _tooltipBehavior = TooltipBehavior(enable: true);
-    _trackballBehavior = TrackballBehavior(
-      enable: true,
-      activationMode: ActivationMode.singleTap,
-      tooltipSettings: InteractiveTooltip(enable: true),
-      lineType: TrackballLineType.vertical,
-      lineDashArray: [5, 5], // Dotted line effect
-    );
-    _crossHairBehavior = CrosshairBehavior(
-      enable: true,
-      lineType: CrosshairLineType.both,
-      lineDashArray: [5, 5],
-    );
     super.initState();
   }
 
@@ -95,65 +52,44 @@ class _WindViewState extends State<WindView> {
               color: Color(0xff89909D),
             ),
           ),
-          Text(
-            '10.0 km se',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xffFFFFFF),
-                borderRadius: BorderRadius.circular(20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '10.0 km ',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
               ),
-              child: SfCartesianChart(
-                primaryXAxis: NumericAxis(
-                  minimum: 0,
-                  maximum: 24,
-                  interval: 6,
-                  majorTickLines: MajorTickLines(size: 6, color: Colors.black),
-                  majorGridLines: MajorGridLines(width: 1, dashArray: [5, 5]),
-                  axisLabelFormatter: (AxisLabelRenderDetails details) {
-                    return ChartAxisLabel(
-                      '${details.value.toInt()}h',
-                      TextStyle(color: Colors.black, fontSize: 12),
-                    );
-                  },
+              Text(
+                "SE",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff89909D),
                 ),
-                primaryYAxis: NumericAxis(
-                  minimum: 20,
-                  maximum: 60,
-                  interval: 10,
-
-                  majorTickLines: MajorTickLines(size: 6, color: Colors.black),
-                  majorGridLines: MajorGridLines(width: 1, dashArray: [5, 5]),
-                ),
-                tooltipBehavior: _tooltipBehavior,
-                trackballBehavior: _trackballBehavior,
-                crosshairBehavior: _crossHairBehavior,
-                series: <CartesianSeries<LineChart, num>>[
-                  LineSeries<LineChart, num>(
-                    dataSource: data,
-                    xValueMapper: (LineChart sales, _) => sales.year,
-                    yValueMapper: (LineChart sales, _) => sales.sales,
-                    // hiển thị thông soo trên đường line
-                    // dataLabelSettings: DataLabelSettings(isVisible: true),
-                    // markerSettings: MarkerSettings(isVisible: true),
-                  ),
-                  AreaSeries<LineChart, num>(
-                    dataSource: data,
-                    xValueMapper: (LineChart sales, _) => sales.year,
-                    yValueMapper: (LineChart sales, _) => sales.sales,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.blue.withOpacity(0.5),
-                        Colors.transparent,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
+              ),
+            ],
+          ),
+          SizedBox(height: 50),
+          SizedBox(
+            height: 360,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomLineChart(
+                data: [
+                  FlSpot(0, 0),
+                  FlSpot(1, 2),
+                  FlSpot(2, 10),
+                  FlSpot(3, 7),
+                  FlSpot(4, 1),
+                  FlSpot(5, 1),
+                  FlSpot(10, 2),
                 ],
+                unit: 'h',
+                interval: 2,
+                colorStart: Color(0xff34C3DA).withAlpha(5),
+                colorEnd: Color(0xff118BDA).withOpacity(0.6),
+                lineColorStart: Color(0xffFDC830),
+                lineColorEnd: Color(0xffF37335),
               ),
             ),
           ),

@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:weather_app/screen/home/view/language.dart';
+import 'package:weather_app/screen/precipitation/view/precipitation.dart';
 
 import '../screen/air_quality/view/air_quality_view.dart';
 import '../screen/compass/view/compass_view.dart';
@@ -174,7 +175,7 @@ class AppRouter {
             name: snowFallScreen,
             path: snowFallScreenPath,
             builder: (context, state) {
-              return SnowFallScreen();
+              return SnowFallView();
             },
           ),
           GoRoute(
@@ -188,7 +189,7 @@ class AppRouter {
             name: precipitationScreen,
             path: precipitationScreenPath,
             builder: (context, state) {
-              return Container();
+              return PrecipitationView();
             },
           ),
           GoRoute(
