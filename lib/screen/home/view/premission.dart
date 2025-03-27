@@ -7,13 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
-import 'package:weather_app/app_bloc/app_event.dart';
 
 import '../../../app_bloc/app_bloc.dart';
+import '../../../app_bloc/app_event.dart';
 import '../../../app_bloc/app_state.dart';
 import '../../../router/app_router.dart';
 import '../../../util/images.dart';
 import '../../../widget/custom_app_button.dart';
+import '../component/show_disconnet_location.dart';
 import '../component/weather_forcast.dart';
 import '../home_controller/home_controller.dart';
 
@@ -27,6 +28,7 @@ class Premission extends StatefulWidget {
 class PremissionState extends State<Premission> {
   late StreamSubscription _streamSubscription;
   bool isDeviceConnected = false;
+  bool isLocationEnabled = false;
   bool isAlert = false;
   HomeController homeController = HomeController();
   Location location = Location();
@@ -34,37 +36,17 @@ class PremissionState extends State<Premission> {
   @override
   void initState() {
     super.initState();
-    _checkInitialConnection(); // Kiểm tra kết nối ban đầu
-    _listenToConnectivityChanges(); // Lắng nghe thay đổi kết nối
+    _checkInitialConnection(); // Only check initial connection
     context.read<AppBloc>().add(SetLocationEvent());
   }
 
-  @override
-  void dispose() {
-    _streamSubscription.cancel(); // Hủy stream đúng cách
-    super.dispose();
-  }
-
-  // Kiểm tra kết nối ban đầu
+  // Check initial connection and update status
   Future<void> _checkInitialConnection() async {
     var connectivityResults = await Connectivity().checkConnectivity();
-    _updateConnectionStatus(connectivityResults);
-  }
-
-  // Lắng nghe thay đổi kết nối
-  void _listenToConnectivityChanges() {
-    _streamSubscription = Connectivity().onConnectivityChanged.listen((
-      results,
-    ) {
-      _updateConnectionStatus(results);
-    });
-  }
-
-  // Cập nhật trạng thái kết nối
-  void _updateConnectionStatus(List<ConnectivityResult> results) {
     setState(() {
-      // Kiểm tra xem có kết nối nào trong danh sách không
-      if (results.contains(ConnectivityResult.none) && results.length == 1) {
+      // Check if there's no connection
+      if (connectivityResults.contains(ConnectivityResult.none) &&
+          connectivityResults.length == 1) {
         isDeviceConnected = false;
         if (!isAlert) {
           showDialogBox();
@@ -73,17 +55,42 @@ class PremissionState extends State<Premission> {
       } else {
         isDeviceConnected = true;
         if (isAlert) {
-          Navigator.of(
-            context,
-            rootNavigator: true,
-          ).pop(); // Đóng dialog nếu đang mở
+          Navigator.of(context, rootNavigator: true).pop();
           isAlert = false;
         }
       }
     });
   }
 
-  // Hiển thị dialog khi không có kết nối
+  Future<void> _checkLocationStatus() async {
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    // Kiểm tra dịch vụ định vị
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      setState(() {
+        isLocationEnabled = false;
+      });
+      return;
+    }
+
+    // Kiểm tra quyền truy cập vị trí
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied ||
+        permissionGranted == PermissionStatus.deniedForever) {
+      setState(() {
+        isLocationEnabled = false;
+      });
+      return;
+    }
+
+    // Nếu cả dịch vụ và quyền đều OK
+    setState(() {
+      isLocationEnabled = true;
+    });
+  }
+
   void showDialogBox() {
     showCupertinoDialog(
       context: context,
@@ -129,7 +136,7 @@ class PremissionState extends State<Premission> {
                         backgroundColor: Color(0xff28B2FF),
                         onPressed: () {
                           AppSettings.openAppSettings(
-                            type: AppSettingsType.wifi,
+                            type: AppSettingsType.settings,
                           );
                         },
                         child: const Text(
@@ -152,89 +159,7 @@ class PremissionState extends State<Premission> {
       child: Scaffold(
         body: Column(
           children: [
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Color(0xffFFFFFF),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
-              ),
-
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(iconErrol),
-                      Text(
-                        'Enable device location permission to update '
-                        'temperature\n'
-                        ' and weather condition',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    ],
-                  ),
-                  CustomAppButton(
-                    onPressed:
-                        () => showDialog(
-                          context: context,
-                          builder:
-                              (BuildContext context) => AlertDialog(
-                                elevation: 0,
-                                title: const Text('Allow location access'),
-                                content: const Text(
-                                  'Update temperature and weather conditions of your location by allowing access to your precise location',
-                                ),
-                                actions: <Widget>[
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CustomAppButton(
-                                        height: 46,
-                                        width: 140,
-                                        backgroundColor: Colors.white,
-                                        onPressed:
-                                            () => Navigator.pop(context, 'OK'),
-                                        child: const Text(
-                                          'Close',
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                      ),
-                                      CustomAppButton(
-                                        elevation: 0,
-                                        height: 46,
-                                        width: 140,
-                                        backgroundColor: Colors.white,
-                                        onPressed: () {
-                                          homeController.determinePosition();
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text(
-                                          'Continue',
-                                          style: TextStyle(
-                                            color: Colors.lightBlueAccent,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                        ),
-                    width: 102,
-                    backgroundColor: Color(0xff2196F3),
-                    text: 'Allow',
-                    textStyle: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xffFFFFFF),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            if (!isLocationEnabled) ShowDisconnectLocation(),
             Expanded(
               child: Stack(
                 children: [

@@ -51,17 +51,6 @@ class _VisibilityButtonState extends State<VisibilityButton>
   }
 
   @override
-  void didUpdateWidget(VisibilityButton oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isMiles != oldWidget.isMiles) {
-      if (widget.isMiles) {
-        _animationController.forward();
-      } else {
-        _animationController.reverse();
-      }
-    }
-  }
-
   @override
   void dispose() {
     _animationController.dispose();

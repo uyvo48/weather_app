@@ -41,6 +41,7 @@ class _CompassViewState extends State<CompassView> {
                 alignment: Alignment.center,
                 children: [
                   Image.asset(imageCompass),
+                  // Xoay widget con
                   Transform.rotate(
                     angle: state.rotationAngle,
                     child: Image.asset(imageNavigation, scale: 1.1),

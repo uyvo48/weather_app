@@ -19,7 +19,6 @@ class _VisibilityViewState extends State<VisibilityView> {
   @override
   void initState() {
     super.initState();
-    // Không cần gọi SetVisibilityEvent ở đây nữa vì onLocationHome sẽ xử lý
   }
 
   @override

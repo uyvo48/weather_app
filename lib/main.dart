@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_app/router/app_router.dart';
 import 'package:weather_app/screen/compass/bloc/compass_bloc.dart';
-import 'package:weather_app/screen/snow_fall/snow_fall_view.dart';
+import 'package:weather_app/screen/home/view/premission.dart';
 import 'package:weather_app/screen/weather_forecast/bloc/weather_forecast_bloc.dart';
-import 'package:weather_app/screen/wind/view/wind_view.dart';
 
 import 'app_bloc/app_bloc.dart';
 
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => WeatherForecastBloc()),
         BlocProvider(create: (context) => CompassBloc()),
       ],
-      child: MaterialApp(home: SnowFallView()),
+      child: MaterialApp(home: Premission()),
       // child: MaterialApp.router(
       //   debugShowCheckedModeBanner: false,
       //   routerConfig: AppRouter().router,
