@@ -1,19 +1,12 @@
-import 'dart:async';
-
-import 'package:app_settings/app_settings.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:location/location.dart';
 
 import '../../../app_bloc/app_bloc.dart';
 import '../../../app_bloc/app_event.dart';
 import '../../../app_bloc/app_state.dart';
 import '../../../router/app_router.dart';
 import '../../../util/images.dart';
-import '../../../widget/custom_app_button.dart';
 import '../component/show_disconnet_location.dart';
 import '../component/weather_forcast.dart';
 import '../home_controller/home_controller.dart';
@@ -26,131 +19,21 @@ class Premission extends StatefulWidget {
 }
 
 class PremissionState extends State<Premission> {
-  late StreamSubscription _streamSubscription;
   bool isDeviceConnected = false;
   bool isLocationEnabled = false;
   bool isAlert = false;
   HomeController homeController = HomeController();
-  Location location = Location();
-
   @override
   void initState() {
     super.initState();
-    _checkInitialConnection(); // Only check initial connection
+    setState(() {
+      homeController.checkInitialConnection(
+        context,
+        isDeviceConnected,
+        isDeviceConnected,
+      );
+    }); // Only check initial connection
     context.read<AppBloc>().add(SetLocationEvent());
-  }
-
-  // Check initial connection and update status
-  Future<void> _checkInitialConnection() async {
-    var connectivityResults = await Connectivity().checkConnectivity();
-    setState(() {
-      // Check if there's no connection
-      if (connectivityResults.contains(ConnectivityResult.none) &&
-          connectivityResults.length == 1) {
-        isDeviceConnected = false;
-        if (!isAlert) {
-          showDialogBox();
-          isAlert = true;
-        }
-      } else {
-        isDeviceConnected = true;
-        if (isAlert) {
-          Navigator.of(context, rootNavigator: true).pop();
-          isAlert = false;
-        }
-      }
-    });
-  }
-
-  Future<void> _checkLocationStatus() async {
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-
-    // Kiểm tra dịch vụ định vị
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      setState(() {
-        isLocationEnabled = false;
-      });
-      return;
-    }
-
-    // Kiểm tra quyền truy cập vị trí
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied ||
-        permissionGranted == PermissionStatus.deniedForever) {
-      setState(() {
-        isLocationEnabled = false;
-      });
-      return;
-    }
-
-    // Nếu cả dịch vụ và quyền đều OK
-    setState(() {
-      isLocationEnabled = true;
-    });
-  }
-
-  void showDialogBox() {
-    showCupertinoDialog(
-      context: context,
-      builder:
-          (BuildContext context) => AlertDialog(
-            title: Image.asset(iconDisconnectedInternet),
-            actions: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'No internet connection',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    textAlign: TextAlign.center,
-                    'Check your internet connection and try again.',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomAppButton(
-                        height: 46,
-                        width: 140,
-                        backgroundColor: Color(0xffFFFFFF),
-                        textColor: Color(0xff000000),
-                        text: 'Close',
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Đóng dialog
-                        },
-                        textStyle: TextStyle(
-                          color: Color(0xff000000),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      CustomAppButton(
-                        height: 46,
-                        width: 140,
-                        backgroundColor: Color(0xff28B2FF),
-                        onPressed: () {
-                          AppSettings.openAppSettings(
-                            type: AppSettingsType.settings,
-                          );
-                        },
-                        child: const Text(
-                          'Open Setting',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-    );
   }
 
   @override

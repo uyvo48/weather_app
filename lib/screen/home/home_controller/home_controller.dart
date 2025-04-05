@@ -1,7 +1,11 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:weather_app/router/app_router.dart';
 import 'package:weather_app/util/images.dart';
 
+import '../component/show_disconnect_internet.dart';
 import '../model/home_model.dart';
 import '../model/seting_model.dart';
 
@@ -61,13 +65,43 @@ class HomeController {
     SettingModel(iconContact, 'Contact us', ''),
     SettingModel(iconShare, 'Share app', ''),
   ];
+  void showDialogBox(BuildContext context) {
+    showCupertinoDialog(
+      context: context,
+      builder:
+          (BuildContext context) => AlertDialog(
+            title: Image.asset(iconDisconnectedInternet),
+            actions: [ShowDisconnectInternet()],
+          ),
+    );
+  }
+
+  void checkInitialConnection(
+    BuildContext context,
+    bool isDeviceConnected,
+    bool isAlert,
+  ) async {
+    var connectivityResults = await Connectivity().checkConnectivity();
+    if (connectivityResults.contains(ConnectivityResult.none) &&
+        connectivityResults.length == 1) {
+      isDeviceConnected = false;
+      if (!isAlert) {
+        showDialogBox(context);
+        isAlert = true;
+      }
+    } else {
+      isDeviceConnected = true;
+      if (isAlert) {
+        Navigator.pop(context);
+        isAlert = false;
+      }
+    }
+  }
 
   void determinePosition() async {
     Location location = Location();
-
     bool serviceEnabled;
     PermissionStatus permissionGranted;
-    LocationData locationData;
 
     serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
@@ -76,7 +110,7 @@ class HomeController {
         return;
       }
     }
-
+    //từ chối quyền truy cập
     permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
@@ -84,7 +118,5 @@ class HomeController {
         return;
       }
     }
-
-    locationData = await location.getLocation();
   }
 }
