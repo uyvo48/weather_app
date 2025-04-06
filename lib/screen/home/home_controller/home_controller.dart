@@ -65,58 +65,49 @@ class HomeController {
     SettingModel(iconContact, 'Contact us', ''),
     SettingModel(iconShare, 'Share app', ''),
   ];
-  void showDialogBox(BuildContext context) {
+
+  void showDialogBoxInternet(BuildContext context) {
     showCupertinoDialog(
       context: context,
       builder:
-          (BuildContext context) => AlertDialog(
+          (BuildContext context) =>
+          AlertDialog(
             title: Image.asset(iconDisconnectedInternet),
             actions: [ShowDisconnectInternet()],
           ),
     );
   }
 
-  void checkInitialConnection(
-    BuildContext context,
-    bool isDeviceConnected,
-    bool isAlert,
-  ) async {
-    var connectivityResults = await Connectivity().checkConnectivity();
-    if (connectivityResults.contains(ConnectivityResult.none) &&
-        connectivityResults.length == 1) {
-      isDeviceConnected = false;
-      if (!isAlert) {
-        showDialogBox(context);
-        isAlert = true;
-      }
-    } else {
-      isDeviceConnected = true;
-      if (isAlert) {
-        Navigator.pop(context);
-        isAlert = false;
-      }
+  Future<bool> checkInitialNetworkConnection(BuildContext context) async{
+    var connectResult = await Connectivity().checkConnectivity();
+    bool isConnect = !connectResult.contains(ConnectivityResult.none);
+    if(!isConnect){
+      showDialogBoxInternet(context);
     }
+    return isConnect;
   }
 
-  void determinePosition() async {
+  Future<bool> checkLocationStatus() async {
     Location location = Location();
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
+    bool isServiceEnabled = await location.serviceEnabled();
+    if (!isServiceEnabled) {
+      return false; // Dịch vụ định vị chưa bật
     }
-    //từ chối quyền truy cập
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return;
-      }
+    PermissionStatus permissionStatus = await location.hasPermission();
+    if (permissionStatus == PermissionStatus.denied) {
+      permissionStatus = await location.requestPermission();
     }
+    return permissionStatus == PermissionStatus.granted;
   }
+Future<bool> requestLocation() async {
+    Location location = Location();
+    if(!await location.serviceEnabled()){
+      if (!await location.requestService()) return false;
+    }
+    if (await location.hasPermission() == PermissionStatus.denied) {
+      if (await location.requestPermission() != PermissionStatus.granted) return false;
+    }
+    return true;
 }
+}
+

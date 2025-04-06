@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location/location.dart';
 
 import '../../../app_bloc/app_bloc.dart';
 import '../../../app_bloc/app_event.dart';
 import '../../../app_bloc/app_state.dart';
 import '../../../router/app_router.dart';
 import '../../../util/images.dart';
-import '../component/show_disconnet_location.dart';
 import '../component/weather_forcast.dart';
 import '../home_controller/home_controller.dart';
 
@@ -19,30 +19,50 @@ class Premission extends StatefulWidget {
 }
 
 class PremissionState extends State<Premission> {
-  bool isDeviceConnected = false;
-  bool isLocationEnabled = false;
+  bool isLocation = false;
+  bool isNetwork = false;
+
   bool isAlert = false;
   HomeController homeController = HomeController();
+
   @override
   void initState() {
     super.initState();
-    setState(() {
-      homeController.checkInitialConnection(
-        context,
-        isDeviceConnected,
-        isDeviceConnected,
-      );
-    }); // Only check initial connection
+    homeController.checkLocationStatus().then((status) {
+      setState(() {
+        isLocation = status;
+      });
+    });
+    homeController.checkInitialNetworkConnection(context).then((status) {
+      setState(() {
+        isNetwork = status;
+        if (!isNetwork) {
+          homeController.showDialogBoxInternet(context);
+        }
+      });
+    });
     context.read<AppBloc>().add(SetLocationEvent());
   }
-
+  Future<bool> checkLocationStatus() async {
+    Location location = Location();
+    bool isServiceEnabled = await location.serviceEnabled();
+    if (!isServiceEnabled) {
+      return false
+      ; // Dịch vụ định vị chưa bật
+    }
+    PermissionStatus permissionStatus = await location.hasPermission();
+    if (permissionStatus == PermissionStatus.denied) {
+      permissionStatus = await location.requestPermission();
+    }
+    return permissionStatus == PermissionStatus.granted;
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
-            if (!isLocationEnabled) ShowDisconnectLocation(),
+
             Expanded(
               child: Stack(
                 children: [

@@ -50,7 +50,7 @@ class _ShowDisconnectInternetState extends State<ShowDisconnectInternet> {
               width: 140,
               backgroundColor: Color(0xff28B2FF),
               onPressed: () {
-                AppSettings.openAppSettings(type: AppSettingsType.settings);
+                AppSettings.openAppSettings(type: AppSettingsType.wifi);
               },
               child: const Text(
                 'Open Setting',

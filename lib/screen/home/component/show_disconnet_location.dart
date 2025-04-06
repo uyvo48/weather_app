@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/screen/home/home_controller/home_controller.dart';
 
@@ -6,7 +7,9 @@ import '../../../widget/custom_app_button.dart';
 
 class ShowDisconnectLocation extends StatelessWidget {
   ShowDisconnectLocation({super.key});
+
   final homeController = HomeController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,8 +67,9 @@ class ShowDisconnectLocation extends StatelessWidget {
                                 width: 140,
                                 backgroundColor: Colors.white,
                                 onPressed: () {
-                                  homeController.determinePosition();
-                                  Navigator.pop(context);
+                                  AppSettings.openAppSettings(
+                                    type: AppSettingsType.location,
+                                  );
                                 },
                                 child: const Text(
                                   'Continue',
