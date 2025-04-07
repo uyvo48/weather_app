@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:location/location.dart';
+import 'package:weather_app/screen/home/component/show_disconnet_location.dart';
 
 import '../../../app_bloc/app_bloc.dart';
 import '../../../app_bloc/app_event.dart';
@@ -21,47 +21,39 @@ class Premission extends StatefulWidget {
 class PremissionState extends State<Premission> {
   bool isLocation = false;
   bool isNetwork = false;
-
-  bool isAlert = false;
   HomeController homeController = HomeController();
 
   @override
   void initState() {
     super.initState();
-    homeController.checkLocationStatus().then((status) {
+    homeController.checkLocationStatus((isEnable) {
       setState(() {
-        isLocation = status;
+        isLocation = isEnable;
+        print(
+          "trang thai dinjg vijbjhgugkugiuhiuyhuih99999999999999999999" +
+              "$isLocation",
+        );
       });
     });
-    homeController.checkInitialNetworkConnection(context).then((status) {
+    homeController.checkStatusInternet((isConnected) {
       setState(() {
-        isNetwork = status;
-        if (!isNetwork) {
+        isNetwork = isConnected;
+
+        if (!isConnected) {
           homeController.showDialogBoxInternet(context);
         }
       });
     });
     context.read<AppBloc>().add(SetLocationEvent());
   }
-  Future<bool> checkLocationStatus() async {
-    Location location = Location();
-    bool isServiceEnabled = await location.serviceEnabled();
-    if (!isServiceEnabled) {
-      return false
-      ; // Dịch vụ định vị chưa bật
-    }
-    PermissionStatus permissionStatus = await location.hasPermission();
-    if (permissionStatus == PermissionStatus.denied) {
-      permissionStatus = await location.requestPermission();
-    }
-    return permissionStatus == PermissionStatus.granted;
-  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
+            isLocation ? Container() : ShowDisconnectLocation(),
 
             Expanded(
               child: Stack(
@@ -164,10 +156,12 @@ class PremissionState extends State<Premission> {
                                   children: [
                                     BlocBuilder<AppBloc, AppState>(
                                       builder: (context, state) {
-                                        return Image.asset(
-                                          state.thermometer,
-                                          height: 50,
-                                          fit: BoxFit.fill,
+                                        return Expanded(
+                                          child: Image.asset(
+                                            state.thermometer,
+
+                                            fit: BoxFit.fill,
+                                          ),
                                         );
                                       },
                                     ),
@@ -217,46 +211,72 @@ class PremissionState extends State<Premission> {
                                       ),
                                     ],
                                   ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Center(child: Image.asset(iconUv)),
-                                      SizedBox(width: 12),
-                                      Text(
-                                        'UV index\n '
-                                        '????',
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      SizedBox(width: 13),
-                                      Container(
-                                        height: 56,
-                                        width: 1,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Center(
-                                        child: Image.asset(
-                                          iconHumidity,
-                                          height: 24,
-                                          width: 24,
-                                        ),
-                                      ),
-                                      SizedBox(width: 3),
-                                      Text(
-                                        'Humidity \n '
-                                        '????',
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
+                                  child: BlocBuilder<AppBloc, AppState>(
+                                    builder: (context, state) {
+                                      return Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Center(child: Image.asset(iconUv)),
+                                          SizedBox(width: 12),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                'UV index',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                "${state.uvIndexMax}",
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(width: 13),
+                                          Container(
+                                            height: 56,
+                                            width: 1,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Center(
+                                            child: Image.asset(
+                                              iconHumidity,
+                                              height: 24,
+                                              width: 24,
+                                            ),
+                                          ),
+                                          SizedBox(width: 3),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                'Humidity ',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                "${state.humidity}",
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   ),
                                 ),
                               ],

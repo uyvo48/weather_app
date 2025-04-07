@@ -129,38 +129,30 @@ class Current extends Equatable {
   Current({
     required this.time,
     required this.interval,
-    required this.temperature2M,
     required this.relativeHumidity2M,
-    required this.precipitation,
-    required this.snowfall,
-    required this.weatherCode,
+    required this.temperature2M,
+    required this.windSpeed10M,
   });
 
   final String? time;
   final num? interval;
-  final num? temperature2M;
   final int? relativeHumidity2M;
-  final num? precipitation;
-  final num? snowfall;
-  final num? weatherCode;
+  final num? temperature2M;
+  final num? windSpeed10M;
 
   Current copyWith({
     String? time,
     num? interval,
-    num? temperature2M,
     int? relativeHumidity2M,
-    num? precipitation,
-    num? snowfall,
-    num? weatherCode,
+    num? temperature2M,
+    num? windSpeed10M,
   }) {
     return Current(
       time: time ?? this.time,
       interval: interval ?? this.interval,
-      temperature2M: temperature2M ?? this.temperature2M,
       relativeHumidity2M: relativeHumidity2M ?? this.relativeHumidity2M,
-      precipitation: precipitation ?? this.precipitation,
-      snowfall: snowfall ?? this.snowfall,
-      weatherCode: weatherCode ?? this.weatherCode,
+      temperature2M: temperature2M ?? this.temperature2M,
+      windSpeed10M: windSpeed10M ?? this.windSpeed10M,
     );
   }
 
@@ -168,33 +160,27 @@ class Current extends Equatable {
     return Current(
       time: json["time"],
       interval: json["interval"],
-      temperature2M: json["temperature_2m"],
       relativeHumidity2M: json["relative_humidity_2m"],
-      precipitation: json["precipitation"],
-      snowfall: json["snowfall"],
-      weatherCode: json["weather_code"],
+      temperature2M: json["temperature_2m"],
+      windSpeed10M: json["wind_speed_10m"],
     );
   }
 
   Map<String, dynamic> toJson() => {
     "time": time,
     "interval": interval,
-    "temperature_2m": temperature2M,
     "relative_humidity_2m": relativeHumidity2M,
-    "precipitation": precipitation,
-    "snowfall": snowfall,
-    "weather_code": weatherCode,
+    "temperature_2m": temperature2M,
+    "wind_speed_10m": windSpeed10M,
   };
 
   @override
   List<Object?> get props => [
     time,
     interval,
-    temperature2M,
     relativeHumidity2M,
-    precipitation,
-    snowfall,
-    weatherCode,
+    temperature2M,
+    windSpeed10M,
   ];
 }
 
@@ -202,38 +188,30 @@ class CurrentUnits extends Equatable {
   CurrentUnits({
     required this.time,
     required this.interval,
-    required this.temperature2M,
     required this.relativeHumidity2M,
-    required this.precipitation,
-    required this.snowfall,
-    required this.weatherCode,
+    required this.temperature2M,
+    required this.windSpeed10M,
   });
 
   final String? time;
   final String? interval;
-  final String? temperature2M;
   final String? relativeHumidity2M;
-  final String? precipitation;
-  final String? snowfall;
-  final String? weatherCode;
+  final String? temperature2M;
+  final String? windSpeed10M;
 
   CurrentUnits copyWith({
     String? time,
     String? interval,
-    String? temperature2M,
     String? relativeHumidity2M,
-    String? precipitation,
-    String? snowfall,
-    String? weatherCode,
+    String? temperature2M,
+    String? windSpeed10M,
   }) {
     return CurrentUnits(
       time: time ?? this.time,
       interval: interval ?? this.interval,
-      temperature2M: temperature2M ?? this.temperature2M,
       relativeHumidity2M: relativeHumidity2M ?? this.relativeHumidity2M,
-      precipitation: precipitation ?? this.precipitation,
-      snowfall: snowfall ?? this.snowfall,
-      weatherCode: weatherCode ?? this.weatherCode,
+      temperature2M: temperature2M ?? this.temperature2M,
+      windSpeed10M: windSpeed10M ?? this.windSpeed10M,
     );
   }
 
@@ -241,59 +219,61 @@ class CurrentUnits extends Equatable {
     return CurrentUnits(
       time: json["time"],
       interval: json["interval"],
-      temperature2M: json["temperature_2m"],
       relativeHumidity2M: json["relative_humidity_2m"],
-      precipitation: json["precipitation"],
-      snowfall: json["snowfall"],
-      weatherCode: json["weather_code"],
+      temperature2M: json["temperature_2m"],
+      windSpeed10M: json["wind_speed_10m"],
     );
   }
 
   Map<String, dynamic> toJson() => {
     "time": time,
     "interval": interval,
-    "temperature_2m": temperature2M,
     "relative_humidity_2m": relativeHumidity2M,
-    "precipitation": precipitation,
-    "snowfall": snowfall,
-    "weather_code": weatherCode,
+    "temperature_2m": temperature2M,
+    "wind_speed_10m": windSpeed10M,
   };
 
   @override
   List<Object?> get props => [
     time,
     interval,
-    temperature2M,
     relativeHumidity2M,
-    precipitation,
-    snowfall,
-    weatherCode,
+    temperature2M,
+    windSpeed10M,
   ];
 }
 
 class Daily extends Equatable {
   Daily({
     required this.time,
-    required this.temperature2MMax,
+    required this.weatherCode,
     required this.temperature2MMin,
+    required this.temperature2MMax,
+    required this.windSpeed10MMax,
     required this.uvIndexMax,
   });
 
   final List<DateTime> time;
-  final List<num> temperature2MMax;
+  final List<num> weatherCode;
   final List<num> temperature2MMin;
+  final List<num> temperature2MMax;
+  final List<num> windSpeed10MMax;
   final List<num> uvIndexMax;
 
   Daily copyWith({
     List<DateTime>? time,
-    List<num>? temperature2MMax,
+    List<num>? weatherCode,
     List<num>? temperature2MMin,
+    List<num>? temperature2MMax,
+    List<num>? windSpeed10MMax,
     List<num>? uvIndexMax,
   }) {
     return Daily(
       time: time ?? this.time,
-      temperature2MMax: temperature2MMax ?? this.temperature2MMax,
+      weatherCode: weatherCode ?? this.weatherCode,
       temperature2MMin: temperature2MMin ?? this.temperature2MMin,
+      temperature2MMax: temperature2MMax ?? this.temperature2MMax,
+      windSpeed10MMax: windSpeed10MMax ?? this.windSpeed10MMax,
       uvIndexMax: uvIndexMax ?? this.uvIndexMax,
     );
   }
@@ -306,14 +286,22 @@ class Daily extends Equatable {
               : List<DateTime>.from(
                 json["time"]!.map((x) => DateTime.tryParse(x ?? "")),
               ),
-      temperature2MMax:
-          json["temperature_2m_max"] == null
+      weatherCode:
+          json["weather_code"] == null
               ? []
-              : List<num>.from(json["temperature_2m_max"]!.map((x) => x)),
+              : List<num>.from(json["weather_code"]!.map((x) => x)),
       temperature2MMin:
           json["temperature_2m_min"] == null
               ? []
               : List<num>.from(json["temperature_2m_min"]!.map((x) => x)),
+      temperature2MMax:
+          json["temperature_2m_max"] == null
+              ? []
+              : List<num>.from(json["temperature_2m_max"]!.map((x) => x)),
+      windSpeed10MMax:
+          json["wind_speed_10m_max"] == null
+              ? []
+              : List<num>.from(json["wind_speed_10m_max"]!.map((x) => x)),
       uvIndexMax:
           json["uv_index_max"] == null
               ? []
@@ -326,19 +314,23 @@ class Daily extends Equatable {
         time
             .map(
               (x) =>
-                  "${x.year.toString().padLeft(4, '0')}-${x.month.toString().padLeft(2, '0')}-${x.day.toString().padLeft(2, '0')}",
+                  "${x.year.toString().padLeft(4)}-${x.month.toString().padLeft(2)}-${x.day.toString().padLeft(2)}",
             )
             .toList(),
-    "temperature_2m_max": temperature2MMax.map((x) => x).toList(),
+    "weather_code": weatherCode.map((x) => x).toList(),
     "temperature_2m_min": temperature2MMin.map((x) => x).toList(),
+    "temperature_2m_max": temperature2MMax.map((x) => x).toList(),
+    "wind_speed_10m_max": windSpeed10MMax.map((x) => x).toList(),
     "uv_index_max": uvIndexMax.map((x) => x).toList(),
   };
 
   @override
   List<Object?> get props => [
     time,
-    temperature2MMax,
+    weatherCode,
     temperature2MMin,
+    temperature2MMax,
+    windSpeed10MMax,
     uvIndexMax,
   ];
 }
@@ -346,26 +338,34 @@ class Daily extends Equatable {
 class DailyUnits extends Equatable {
   DailyUnits({
     required this.time,
-    required this.temperature2MMax,
+    required this.weatherCode,
     required this.temperature2MMin,
+    required this.temperature2MMax,
+    required this.windSpeed10MMax,
     required this.uvIndexMax,
   });
 
   final String? time;
-  final String? temperature2MMax;
+  final String? weatherCode;
   final String? temperature2MMin;
+  final String? temperature2MMax;
+  final String? windSpeed10MMax;
   final String? uvIndexMax;
 
   DailyUnits copyWith({
     String? time,
-    String? temperature2MMax,
+    String? weatherCode,
     String? temperature2MMin,
+    String? temperature2MMax,
+    String? windSpeed10MMax,
     String? uvIndexMax,
   }) {
     return DailyUnits(
       time: time ?? this.time,
-      temperature2MMax: temperature2MMax ?? this.temperature2MMax,
+      weatherCode: weatherCode ?? this.weatherCode,
       temperature2MMin: temperature2MMin ?? this.temperature2MMin,
+      temperature2MMax: temperature2MMax ?? this.temperature2MMax,
+      windSpeed10MMax: windSpeed10MMax ?? this.windSpeed10MMax,
       uvIndexMax: uvIndexMax ?? this.uvIndexMax,
     );
   }
@@ -373,24 +373,30 @@ class DailyUnits extends Equatable {
   factory DailyUnits.fromJson(Map<String, dynamic> json) {
     return DailyUnits(
       time: json["time"],
-      temperature2MMax: json["temperature_2m_max"],
+      weatherCode: json["weather_code"],
       temperature2MMin: json["temperature_2m_min"],
+      temperature2MMax: json["temperature_2m_max"],
+      windSpeed10MMax: json["wind_speed_10m_max"],
       uvIndexMax: json["uv_index_max"],
     );
   }
 
   Map<String, dynamic> toJson() => {
     "time": time,
-    "temperature_2m_max": temperature2MMax,
+    "weather_code": weatherCode,
     "temperature_2m_min": temperature2MMin,
+    "temperature_2m_max": temperature2MMax,
+    "wind_speed_10m_max": windSpeed10MMax,
     "uv_index_max": uvIndexMax,
   };
 
   @override
   List<Object?> get props => [
     time,
-    temperature2MMax,
+    weatherCode,
     temperature2MMin,
+    temperature2MMax,
+    windSpeed10MMax,
     uvIndexMax,
   ];
 }
@@ -399,34 +405,42 @@ class Hourly extends Equatable {
   Hourly({
     required this.time,
     required this.temperature2M,
-    required this.relativeHumidity2M,
     required this.snowfall,
-    required this.weatherCode,
+    required this.windSpeed10M,
     required this.visibility,
+    required this.weatherCode,
+    required this.precipitation,
+    required this.relativeHumidity2M,
   });
 
   final List<String> time;
   final List<num> temperature2M;
-  final List<num> relativeHumidity2M;
   final List<num> snowfall;
-  final List<num> weatherCode;
+  final List<num> windSpeed10M;
   final List<num> visibility;
+  final List<num> weatherCode;
+  final List<num> precipitation;
+  final List<num> relativeHumidity2M;
 
   Hourly copyWith({
     List<String>? time,
     List<num>? temperature2M,
-    List<num>? relativeHumidity2M,
     List<num>? snowfall,
-    List<num>? weatherCode,
+    List<num>? windSpeed10M,
     List<num>? visibility,
+    List<num>? weatherCode,
+    List<num>? precipitation,
+    List<num>? relativeHumidity2M,
   }) {
     return Hourly(
       time: time ?? this.time,
       temperature2M: temperature2M ?? this.temperature2M,
-      relativeHumidity2M: relativeHumidity2M ?? this.relativeHumidity2M,
       snowfall: snowfall ?? this.snowfall,
-      weatherCode: weatherCode ?? this.weatherCode,
+      windSpeed10M: windSpeed10M ?? this.windSpeed10M,
       visibility: visibility ?? this.visibility,
+      weatherCode: weatherCode ?? this.weatherCode,
+      precipitation: precipitation ?? this.precipitation,
+      relativeHumidity2M: relativeHumidity2M ?? this.relativeHumidity2M,
     );
   }
 
@@ -440,42 +454,54 @@ class Hourly extends Equatable {
           json["temperature_2m"] == null
               ? []
               : List<num>.from(json["temperature_2m"]!.map((x) => x)),
-      relativeHumidity2M:
-          json["relative_humidity_2m"] == null
-              ? []
-              : List<num>.from(json["relative_humidity_2m"]!.map((x) => x)),
       snowfall:
           json["snowfall"] == null
               ? []
               : List<num>.from(json["snowfall"]!.map((x) => x)),
-      weatherCode:
-          json["weather_code"] == null
+      windSpeed10M:
+          json["wind_speed_10m"] == null
               ? []
-              : List<num>.from(json["weather_code"]!.map((x) => x)),
+              : List<num>.from(json["wind_speed_10m"]!.map((x) => x)),
       visibility:
           json["visibility"] == null
               ? []
               : List<num>.from(json["visibility"]!.map((x) => x)),
+      weatherCode:
+          json["weather_code"] == null
+              ? []
+              : List<num>.from(json["weather_code"]!.map((x) => x)),
+      precipitation:
+          json["precipitation"] == null
+              ? []
+              : List<num>.from(json["precipitation"]!.map((x) => x)),
+      relativeHumidity2M:
+          json["relative_humidity_2m"] == null
+              ? []
+              : List<num>.from(json["relative_humidity_2m"]!.map((x) => x)),
     );
   }
 
   Map<String, dynamic> toJson() => {
     "time": time.map((x) => x).toList(),
     "temperature_2m": temperature2M.map((x) => x).toList(),
-    "relative_humidity_2m": relativeHumidity2M.map((x) => x).toList(),
     "snowfall": snowfall.map((x) => x).toList(),
-    "weather_code": weatherCode.map((x) => x).toList(),
+    "wind_speed_10m": windSpeed10M.map((x) => x).toList(),
     "visibility": visibility.map((x) => x).toList(),
+    "weather_code": weatherCode.map((x) => x).toList(),
+    "precipitation": precipitation.map((x) => x).toList(),
+    "relative_humidity_2m": relativeHumidity2M.map((x) => x).toList(),
   };
 
   @override
   List<Object?> get props => [
     time,
     temperature2M,
-    relativeHumidity2M,
     snowfall,
-    weatherCode,
+    windSpeed10M,
     visibility,
+    weatherCode,
+    precipitation,
+    relativeHumidity2M,
   ];
 }
 
@@ -483,34 +509,42 @@ class HourlyUnits extends Equatable {
   HourlyUnits({
     required this.time,
     required this.temperature2M,
-    required this.relativeHumidity2M,
     required this.snowfall,
-    required this.weatherCode,
+    required this.windSpeed10M,
     required this.visibility,
+    required this.weatherCode,
+    required this.precipitation,
+    required this.relativeHumidity2M,
   });
 
   final String? time;
   final String? temperature2M;
-  final String? relativeHumidity2M;
   final String? snowfall;
-  final String? weatherCode;
+  final String? windSpeed10M;
   final String? visibility;
+  final String? weatherCode;
+  final String? precipitation;
+  final String? relativeHumidity2M;
 
   HourlyUnits copyWith({
     String? time,
     String? temperature2M,
-    String? relativeHumidity2M,
     String? snowfall,
-    String? weatherCode,
+    String? windSpeed10M,
     String? visibility,
+    String? weatherCode,
+    String? precipitation,
+    String? relativeHumidity2M,
   }) {
     return HourlyUnits(
       time: time ?? this.time,
       temperature2M: temperature2M ?? this.temperature2M,
-      relativeHumidity2M: relativeHumidity2M ?? this.relativeHumidity2M,
       snowfall: snowfall ?? this.snowfall,
-      weatherCode: weatherCode ?? this.weatherCode,
+      windSpeed10M: windSpeed10M ?? this.windSpeed10M,
       visibility: visibility ?? this.visibility,
+      weatherCode: weatherCode ?? this.weatherCode,
+      precipitation: precipitation ?? this.precipitation,
+      relativeHumidity2M: relativeHumidity2M ?? this.relativeHumidity2M,
     );
   }
 
@@ -518,29 +552,35 @@ class HourlyUnits extends Equatable {
     return HourlyUnits(
       time: json["time"],
       temperature2M: json["temperature_2m"],
-      relativeHumidity2M: json["relative_humidity_2m"],
       snowfall: json["snowfall"],
-      weatherCode: json["weather_code"],
+      windSpeed10M: json["wind_speed_10m"],
       visibility: json["visibility"],
+      weatherCode: json["weather_code"],
+      precipitation: json["precipitation"],
+      relativeHumidity2M: json["relative_humidity_2m"],
     );
   }
 
   Map<String, dynamic> toJson() => {
     "time": time,
     "temperature_2m": temperature2M,
-    "relative_humidity_2m": relativeHumidity2M,
     "snowfall": snowfall,
-    "weather_code": weatherCode,
+    "wind_speed_10m": windSpeed10M,
     "visibility": visibility,
+    "weather_code": weatherCode,
+    "precipitation": precipitation,
+    "relative_humidity_2m": relativeHumidity2M,
   };
 
   @override
   List<Object?> get props => [
     time,
     temperature2M,
-    relativeHumidity2M,
     snowfall,
-    weatherCode,
+    windSpeed10M,
     visibility,
+    weatherCode,
+    precipitation,
+    relativeHumidity2M,
   ];
 }

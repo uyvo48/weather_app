@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/router/app_router.dart';
 import 'package:weather_app/util/images.dart';
 
@@ -66,48 +68,40 @@ class HomeController {
     SettingModel(iconShare, 'Share app', ''),
   ];
 
+  StreamSubscription<ServiceStatus>? subscriptionLoctation;
+
+  void checkLocationStatus(Function(bool) onStatus) async {
+    bool isEnabled = await Geolocator.isLocationServiceEnabled();
+    onStatus(isEnabled);
+
+    subscriptionLoctation = Geolocator.getServiceStatusStream().listen((
+      ServiceStatus status,
+    ) {
+      onStatus(status == ServiceStatus.enabled);
+    });
+  }
+
+  StreamSubscription<List<ConnectivityResult>>? subscriptionInternet;
+
+  void checkStatusInternet(Function(bool) onStatusInternet) {
+    subscriptionInternet = Connectivity().onConnectivityChanged.listen((
+      List<ConnectivityResult> result,
+    ) {
+      bool isConnected =
+          result.isNotEmpty &&
+          result.any((result) => result != ConnectivityResult.none);
+      onStatusInternet(isConnected);
+    });
+  }
+
   void showDialogBoxInternet(BuildContext context) {
     showCupertinoDialog(
       context: context,
       builder:
-          (BuildContext context) =>
-          AlertDialog(
+          (BuildContext context) => AlertDialog(
             title: Image.asset(iconDisconnectedInternet),
             actions: [ShowDisconnectInternet()],
           ),
     );
   }
-
-  Future<bool> checkInitialNetworkConnection(BuildContext context) async{
-    var connectResult = await Connectivity().checkConnectivity();
-    bool isConnect = !connectResult.contains(ConnectivityResult.none);
-    if(!isConnect){
-      showDialogBoxInternet(context);
-    }
-    return isConnect;
-  }
-
-  Future<bool> checkLocationStatus() async {
-    Location location = Location();
-    bool isServiceEnabled = await location.serviceEnabled();
-    if (!isServiceEnabled) {
-      return false; // Dịch vụ định vị chưa bật
-    }
-    PermissionStatus permissionStatus = await location.hasPermission();
-    if (permissionStatus == PermissionStatus.denied) {
-      permissionStatus = await location.requestPermission();
-    }
-    return permissionStatus == PermissionStatus.granted;
-  }
-Future<bool> requestLocation() async {
-    Location location = Location();
-    if(!await location.serviceEnabled()){
-      if (!await location.requestService()) return false;
-    }
-    if (await location.hasPermission() == PermissionStatus.denied) {
-      if (await location.requestPermission() != PermissionStatus.granted) return false;
-    }
-    return true;
 }
-}
-

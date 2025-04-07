@@ -31,11 +31,9 @@ class _ShowDisconnectInternetState extends State<ShowDisconnectInternet> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomAppButton(
-              height: 46,
-              width: 140,
               backgroundColor: Color(0xffFFFFFF),
               textColor: Color(0xff000000),
-              text: 'Close',
+
               onPressed: () {
                 Navigator.of(context).pop(); // Đóng dialog
               },
@@ -44,17 +42,40 @@ class _ShowDisconnectInternetState extends State<ShowDisconnectInternet> {
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 36.0,
+                  vertical: 12,
+                ),
+                child: Text(
+                  'Close',
+                  style: TextStyle(
+                    color: Color(0xff000000),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
             ),
             CustomAppButton(
-              height: 46,
-              width: 140,
               backgroundColor: Color(0xff28B2FF),
               onPressed: () {
                 AppSettings.openAppSettings(type: AppSettingsType.wifi);
+                Navigator.pop(context);
               },
-              child: const Text(
-                'Open Setting',
-                style: TextStyle(color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 12,
+                ),
+                child: const Text(
+                  'Open Setting',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ),
           ],

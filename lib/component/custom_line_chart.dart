@@ -32,6 +32,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
         padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
         child: LineChart(
           LineChartData(
+            minY: 0,
             titlesData: _buildTitlesData(),
             borderData: _buildBorderData(),
             lineBarsData: [_lineBarSpot()],
@@ -48,7 +49,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
       bottomTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          reservedSize: 20,
+          reservedSize: 30,
           maxIncluded: true,
           minIncluded: true,
           interval: 2,

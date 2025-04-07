@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:weather_app/app_bloc/app_bloc.dart';
 import 'package:weather_app/app_bloc/app_state.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
@@ -53,7 +52,7 @@ class SnowFallViewState extends State<SnowFallView> {
             ),
           ),
           Text(
-            '10.0 km se',
+            '10.0 km ',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 50),

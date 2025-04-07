@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:weather_app/app_bloc/app_bloc.dart';
 import 'package:weather_app/app_bloc/app_state.dart';
 import 'package:weather_app/component/app_bar_setting_item.dart';
@@ -13,87 +12,104 @@ class WindView extends StatefulWidget {
   const WindView({super.key});
 
   @override
-  _WindViewState createState() {
-    return _WindViewState();
-  }
+  WindViewState createState() => WindViewState();
 }
 
-class _WindViewState extends State<WindView> {
+class WindViewState extends State<WindView> {
   @override
   void initState() {
     super.initState();
   }
 
+  // Hàm chuyển đổi dữ liệu thời gian và tốc độ gió thành List<FlSpot>, sử dụng giờ thực tế
+  List<FlSpot> _convertToFlSpots(List<String> times, List<num> windSpeeds) {
+    // Lấy 12 phần tử cuối cùng (nếu danh sách đủ dài)
+    final int startIndex = times.length > 12 ? times.length - 12 : 0;
+    final recentTimes = times.sublist(startIndex);
+    final recentWindSpeeds = windSpeeds.sublist(startIndex);
+
+    List<FlSpot> spots = [];
+    for (
+      int i = 0;
+      i < recentTimes.length && i < recentWindSpeeds.length;
+      i++
+    ) {
+      // Chuyển thời gian thành giờ (0-23) từ chuỗi ISO (ví dụ: "2023-10-01T12:00")
+      final dateTime = DateTime.parse(recentTimes[i]);
+      final hour = dateTime.hour + dateTime.minute / 60.0; // Giờ thập phân
+      spots.add(FlSpot(hour, recentWindSpeeds[i].toDouble()));
+    }
+    return spots;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarSettingItem(textSettingItem: 'Wind'),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      appBar: AppBarSettingItem(textSettingItem: 'Wind Speed'),
+      body: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          // Kiểm tra xem state có dữ liệu Weather chưa
+          if (state.weather == null || state.weather!.hourly == null) {
+            return Center(child: Text('No wind data available'));
+          }
+
+          // Lấy dữ liệu từ state.weather
+          final hourly = state.weather!.hourly!;
+          final windSpots = _convertToFlSpots(hourly.time, hourly.windSpeed10M);
+
+          // Lấy thời gian và tốc độ gió hiện tại (mới nhất)
+          final latestTime =
+              hourly.time.isNotEmpty
+                  ? hourly.time.last.substring(11, 16)
+                  : 'N/A';
+          final latestWindSpeed =
+              hourly.windSpeed10M.isNotEmpty
+                  ? '${hourly.windSpeed10M.last} ${state.weather!.hourlyUnits!.windSpeed10M}'
+                  : 'N/A';
+
+          return Column(
             children: [
-              Image.asset(iconLocation),
-              BlocBuilder<AppBloc, AppState>(
-                builder: (context, state) {
-                  return Text(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(iconLocation),
+                  Text(
                     'Vĩ độ: ${state.latitude}, Kinh độ: ${state.longitude}',
                     style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
-                  );
-                },
+                  ),
+                ],
               ),
-            ],
-          ),
-          Text(
-            '17:50',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: Color(0xff89909D),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
               Text(
-                '10.0 km ',
+                latestTime, // Hiển thị thời gian mới nhất
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff12203A).withOpacity(0.5),
+                ),
+              ),
+              Text(
+                latestWindSpeed, // Hiển thị tốc độ gió mới nhất
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
               ),
-              Text(
-                "SE",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff89909D),
+              SizedBox(height: 50),
+              SizedBox(
+                height: 360,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomLineChart(
+                    data: windSpots, // Dữ liệu với thời gian thực tế
+                    unit: 'h', // Không cần đơn vị vì hiển thị giờ thực tế
+                    interval: 2, // Khoảng cách nhãn trục X (2 giờ)
+                    colorStart: Color(0xffFDC830).withAlpha(5),
+                    colorEnd: Color(0xffF37335).withOpacity(0.6),
+                    lineColorStart: Color(0xffFDC830),
+                    lineColorEnd: Color(0xffF37335),
+                  ),
                 ),
               ),
             ],
-          ),
-          SizedBox(height: 50),
-          SizedBox(
-            height: 360,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomLineChart(
-                data: [
-                  FlSpot(0, 0),
-                  FlSpot(1, 2),
-                  FlSpot(2, 10),
-                  FlSpot(3, 7),
-                  FlSpot(4, 1),
-                  FlSpot(5, 1),
-                  FlSpot(10, 2),
-                ],
-                unit: 'h',
-                interval: 2,
-                colorStart: Color(0xff34C3DA).withAlpha(5),
-                colorEnd: Color(0xff118BDA).withOpacity(0.6),
-                lineColorStart: Color(0xffFDC830),
-                lineColorEnd: Color(0xffF37335),
-              ),
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

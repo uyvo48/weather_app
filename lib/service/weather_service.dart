@@ -10,7 +10,7 @@ class WeatherService {
     required double longitude,
   }) async {
     final url = Uri.parse(
-      'https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&hourly=relative_humidity_2m,snowfall,weather_code,visibility&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,wind_speed_10m_max',
+      'https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&daily=weather_code,temperature_2m_min,temperature_2m_max,wind_speed_10m_max,uv_index_max&hourly=temperature_2m,snowfall,wind_speed_10m,visibility,weather_code,precipitation,relative_humidity_2m&current=relative_humidity_2m,temperature_2m,wind_speed_10m',
     );
     final response = await http.get(url);
     if (response.statusCode == 200) {

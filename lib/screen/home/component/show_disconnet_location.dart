@@ -49,32 +49,43 @@ class ShowDisconnectLocation extends StatelessWidget {
                         ),
                         actions: <Widget>[
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CustomAppButton(
-                                height: 46,
-                                width: 140,
                                 backgroundColor: Colors.white,
-                                onPressed: () => Navigator.pop(context, 'OK'),
-                                child: const Text(
-                                  'Close',
-                                  style: TextStyle(color: Colors.red),
+                                onPressed: () => Navigator.pop(context),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 32,
+                                    vertical: 12,
+                                  ),
+                                  child: const Text(
+                                    'Close',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
                                 ),
                               ),
+                              SizedBox(width: 4),
                               CustomAppButton(
                                 elevation: 0,
-                                height: 46,
-                                width: 140,
+
                                 backgroundColor: Colors.white,
                                 onPressed: () {
                                   AppSettings.openAppSettings(
                                     type: AppSettingsType.location,
                                   );
+                                  Navigator.pop(context);
                                 },
-                                child: const Text(
-                                  'Continue',
-                                  style: TextStyle(
-                                    color: Colors.lightBlueAccent,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0,
+                                    vertical: 12,
+                                  ),
+                                  child: const Text(
+                                    'Continue',
+                                    style: TextStyle(
+                                      color: Colors.lightBlueAccent,
+                                    ),
                                   ),
                                 ),
                               ),
