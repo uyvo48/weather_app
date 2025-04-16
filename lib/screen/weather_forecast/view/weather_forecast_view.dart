@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weather_app/screen/weather_forecast/bloc/weather_forecast_bloc.dart';
-import 'package:weather_app/screen/weather_forecast/bloc/weather_forecast_state.dart';
+import 'package:weather_app/app_bloc/app_state.dart';
+
 import 'package:weather_app/util/images.dart';
 
-import '../bloc/weather_forecast_event.dart';
+import '../../../app_bloc/app_bloc.dart';
+import '../../../app_bloc/app_event.dart';
+
 import '../component/button_weather_forecast.dart';
 import '../component/weather_day_item.dart';
 
@@ -17,11 +19,9 @@ class WeatherForecastView extends StatefulWidget {
 }
 
 class _WeatherForecastViewState extends State<WeatherForecastView> {
-  bool useFahrenheit = false;
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeatherForecastBloc, WeatherForecastState>(
+    return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -54,8 +54,9 @@ class _WeatherForecastViewState extends State<WeatherForecastView> {
                 padding: EdgeInsets.all(8),
                 width: 100,
                 child: ButtonWeatherForecast(
+                  initialValue: state.checkButton,
                   onUnitChanged: (value) {
-                    context.read<WeatherForecastBloc>().add(
+                    context.read<AppBloc>().add(
                       ChangeTemperatureEvent(
                         unit: state.unit,
                         textTemperature: state.textTemperature,
@@ -117,18 +118,18 @@ class _WeatherForecastViewState extends State<WeatherForecastView> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 10,
+                  itemCount:state.weather!.daily!.temperature2MMax.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: WeatherDayItem(
                         textDay: 'Mon',
-                        minTempCelsius: state.textTemperature,
-                        maxTempCelsius: state.textTemperature,
+                        minTempCelsius: state.weather!.daily!.temperature2MMax[index].toDouble(),
+                        maxTempCelsius: state.weather!.daily!.temperature2MMin[index].toDouble(),
                         iconState: iconSun,
                         textStateWeatherForecast: 'rain',
-                        useFahrenheit: useFahrenheit,
+                        useFahrenheit: state.checkButton,
                       ),
                     );
                   },

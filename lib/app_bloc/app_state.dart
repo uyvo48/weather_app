@@ -21,6 +21,9 @@ class AppState extends Equatable {
   final Weather? weather;
   final double humidity;
   final double airQuality;
+  final double textTemperature;
+  final String unit;
+  final bool checkButton;
 
   const AppState({
     required this.airQuality,
@@ -37,11 +40,17 @@ class AppState extends Equatable {
     required this.buttonColor,
     required this.visibilityParameter,
     required this.visibilityUnit,
-    this.rawVisibility, // Thêm vào constructor
+    this.rawVisibility,
+    required this.checkButton,
+    required this.textTemperature,
+    required this.unit, // Thêm vào constructor
   });
 
   factory AppState.init() {
     return AppState(
+      textTemperature: 25,
+      unit: 'C',
+      checkButton: false,
       airQuality: 0,
       humidity: 0,
       weather: null,
@@ -73,6 +82,9 @@ class AppState extends Equatable {
     double? rawVisibility,
     Weather? weather,
     double? humidity,
+    double? textTemperature,
+    String? unit,
+    bool? checkButton,
   }) {
     return AppState(
       airQuality: airQuality ?? this.airQuality,
@@ -89,6 +101,9 @@ class AppState extends Equatable {
       visibilityParameter: visibilityParameter ?? this.visibilityParameter,
       visibilityUnit: visibilityUnit ?? this.visibilityUnit,
       rawVisibility: rawVisibility ?? this.rawVisibility,
+      textTemperature: textTemperature ?? this.textTemperature,
+      unit: unit ?? this.unit,
+      checkButton: checkButton ?? this.checkButton,
     );
   }
 
@@ -105,6 +120,8 @@ class AppState extends Equatable {
     longitude,
     uvIndexMax,
     rawVisibility,
-    humidity, // Thêm vào props
+    humidity,
+    textTemperature,
+    unit, // Thêm vào props
   ];
 }

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 import 'package:geolocator/geolocator.dart';
 
@@ -17,6 +18,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<SetUvIndexMax>(_onUvIndex);
     on<SetHumidity>(_onHumidity);
     on<SetAirQuality>(_onAirQuality);
+    on<ChangeTemperatureEvent>(_onChangeParameterTemperature);
+
   }
 
   void _onChangeImageTheme(SetThemeEvent event, Emitter<AppState> emit) {
@@ -137,9 +140,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           isMiles ? const Color(0xffFF9A8B) : const Color(0xff4BcFF9);
       final newButtonColor =
           isMiles ? const Color(0xffFF6F61) : const Color(0xff4DBFF9);
+      final double newTemperature = weatherData.current?.temperature2M?.toDouble() ?? state.textTemperature;
+      final double updatedTemperature = state.checkButton
+          ? (newTemperature * 1.8 + 32)
+          : newTemperature;
 
       emit(
         state.copyWith(
+          textTemperature: updatedTemperature.roundToDouble(),
+          unit: state.checkButton ? 'F' : 'C',
           humidity: humidity,
           weather: weatherData,
           longitude: position.longitude,
@@ -179,6 +188,43 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       emit(state.copyWith(humidity: null));
     }
   }
-
+// chuyển đổi thời gian và giá trị số lượng của các đơn vị
   void _onAirQuality(SetAirQuality event, Emitter<AppState> emit) {}
+  List<FlSpot> _convertToFlSpots(List<String> times, List<num> unitChart) {
+    // Lấy tối đa 12 điểm dữ liệu gần nhất
+    final int startIndex = times.length > 12 ? times.length - 12 : 0;
+    final recentTimes = times.sublist(startIndex);
+    final recentWindSpeeds = unitChart.sublist(startIndex);
+
+    return List.generate(recentTimes.length, (i) {
+      final dateTime = DateTime.parse(recentTimes[i]);
+      final hour = dateTime.hour + dateTime.minute / 60.0;
+      return FlSpot(hour, recentWindSpeeds[i].toDouble());
+    });
+  }
+
+  void _onChangeParameterTemperature(
+      ChangeTemperatureEvent event,
+      Emitter<AppState> emit,
+      ) {
+    print('Chuyển đơn vị: checkButton=${event.checkButton}, textTemperature=${state.textTemperature}, unit=${state.unit}');
+    double newParameter;
+    if (event.checkButton) {
+      // Chuyển sang °F
+      final currentTemp = state.weather?.current?.temperature2M?.toDouble() ?? state.textTemperature;
+      newParameter = currentTemp * 1.8 + 32;
+    } else {
+      // Chuyển lại °C
+      newParameter = (state.textTemperature - 32) / 1.8; // Sử dụng textTemperature hiện tại (°F)
+    }
+
+    print('New temperature: $newParameter, unit: ${event.checkButton ? 'F' : 'C'}');
+    emit(
+      state.copyWith(
+        textTemperature: newParameter.roundToDouble(),
+        unit: event.checkButton ? 'F' : 'C',
+        checkButton: event.checkButton,
+      ),
+    );
+  }
 }

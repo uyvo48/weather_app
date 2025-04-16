@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class DiagramScreen extends StatelessWidget {
-  DiagramScreen({
+  const DiagramScreen({
     super.key,
     required this.textvalue,
     required this.located,

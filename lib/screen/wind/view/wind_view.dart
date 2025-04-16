@@ -23,23 +23,16 @@ class WindViewState extends State<WindView> {
 
   // Hàm chuyển đổi dữ liệu thời gian và tốc độ gió thành List<FlSpot>, sử dụng giờ thực tế
   List<FlSpot> _convertToFlSpots(List<String> times, List<num> windSpeeds) {
-    // Lấy 12 phần tử cuối cùng (nếu danh sách đủ dài)
+    // Lấy tối đa 12 điểm dữ liệu gần nhất
     final int startIndex = times.length > 12 ? times.length - 12 : 0;
     final recentTimes = times.sublist(startIndex);
     final recentWindSpeeds = windSpeeds.sublist(startIndex);
 
-    List<FlSpot> spots = [];
-    for (
-      int i = 0;
-      i < recentTimes.length && i < recentWindSpeeds.length;
-      i++
-    ) {
-      // Chuyển thời gian thành giờ (0-23) từ chuỗi ISO (ví dụ: "2023-10-01T12:00")
+    return List.generate(recentTimes.length, (i) {
       final dateTime = DateTime.parse(recentTimes[i]);
-      final hour = dateTime.hour + dateTime.minute / 60.0; // Giờ thập phân
-      spots.add(FlSpot(hour, recentWindSpeeds[i].toDouble()));
-    }
-    return spots;
+      final hour = dateTime.hour + dateTime.minute / 60.0;
+      return FlSpot(hour, recentWindSpeeds[i].toDouble());
+    });
   }
 
   @override
@@ -48,16 +41,12 @@ class WindViewState extends State<WindView> {
       appBar: AppBarSettingItem(textSettingItem: 'Wind Speed'),
       body: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
-          // Kiểm tra xem state có dữ liệu Weather chưa
-          if (state.weather == null || state.weather!.hourly == null) {
-            return Center(child: Text('No wind data available'));
+          if (state.weather?.hourly == null) {
+            return const Center(child: Text('No wind data available'));
           }
 
-          // Lấy dữ liệu từ state.weather
           final hourly = state.weather!.hourly!;
           final windSpots = _convertToFlSpots(hourly.time, hourly.windSpeed10M);
-
-          // Lấy thời gian và tốc độ gió hiện tại (mới nhất)
           final latestTime =
               hourly.time.isNotEmpty
                   ? hourly.time.last.substring(11, 16)
@@ -97,9 +86,12 @@ class WindViewState extends State<WindView> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomLineChart(
-                    data: windSpots, // Dữ liệu với thời gian thực tế
-                    unit: 'h', // Không cần đơn vị vì hiển thị giờ thực tế
-                    interval: 2, // Khoảng cách nhãn trục X (2 giờ)
+                    data: windSpots,
+                    // Dữ liệu với thời gian thực tế
+                    unit: 'h',
+                    // Không cần đơn vị vì hiển thị giờ thực tế
+                    interval: 2,
+                    // Khoảng cách nhãn trục X (2 giờ)
                     colorStart: Color(0xffFDC830).withAlpha(5),
                     colorEnd: Color(0xffF37335).withOpacity(0.6),
                     lineColorStart: Color(0xffFDC830),

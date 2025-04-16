@@ -10,7 +10,7 @@ class WeatherService {
     required double longitude,
   }) async {
     final url = Uri.parse(
-      'https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&daily=weather_code,temperature_2m_min,temperature_2m_max,wind_speed_10m_max,uv_index_max&hourly=temperature_2m,snowfall,wind_speed_10m,visibility,weather_code,precipitation,relative_humidity_2m&current=relative_humidity_2m,temperature_2m,wind_speed_10m',
+      'https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&daily=temperature_2m_max,temperature_2m_min,uv_index_max&hourly=temperature_2m,snowfall,precipitation,relative_humidity_2m,weather_code,visibility,wind_speed_10m,precipitation_probability,uv_index&current=temperature_2m,relative_humidity_2m,precipitation',
     );
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -20,6 +20,7 @@ class WeatherService {
       print(weather.hourly?.visibility.toString());
       print('Visibility data: ${weather.hourly!.visibility.last}');
       print('humidity ${weather.hourly!.relativeHumidity2M.last}');
+      print('temperature ${weather.current!.temperature2M}');
       return weather;
     } else {
       print(

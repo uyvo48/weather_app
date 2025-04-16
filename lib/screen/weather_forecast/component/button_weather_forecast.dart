@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 
 class ButtonWeatherForecast extends StatefulWidget {
   final ValueChanged<bool> onUnitChanged; // Callback báo thay đổi đơn vị
-
-  const ButtonWeatherForecast({super.key, required this.onUnitChanged});
+  final bool initialValue;
+  const ButtonWeatherForecast({
+    super.key,
+    required this.onUnitChanged,
+     required this.initialValue,
+  });
 
   @override
   State<ButtonWeatherForecast> createState() => _ButtonWeatherForecastState();
@@ -12,6 +16,11 @@ class ButtonWeatherForecast extends StatefulWidget {
 
 class _ButtonWeatherForecastState extends State<ButtonWeatherForecast> {
   bool firstSwitchValue = false;
+  @override
+  void initState() {
+    super.initState();
+    firstSwitchValue = widget.initialValue; // Khởi tạo từ initialValue
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
